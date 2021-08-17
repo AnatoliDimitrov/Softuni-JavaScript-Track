@@ -1,0 +1,22 @@
+{
+  "name": "exam",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "dependencies": {
+    "handlebars": "^4.7.3",
+    "jquery": "^3.4.1",
+    "lit-html": "^1.4.1",
+    "page": "^1.11.6",
+    "sammy": "^0.7.6"
+  },
+  "devDependencies": {
+    "http-server": "0.12.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server -a localhost -p 3000 -P http://localhost:3000? -c-1"
+  },
+  "author": "",
+  "license": "ISC"
+}
