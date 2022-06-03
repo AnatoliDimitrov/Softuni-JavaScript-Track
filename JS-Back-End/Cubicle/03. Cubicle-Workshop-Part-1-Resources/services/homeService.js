@@ -9,10 +9,10 @@ exports.getCubes = (search = '', from = 1, to = 6) => {
         to = 6;
     }
 
-    let cubes = JSON.parse(fs.readFileSync('./config/database.json', {encoding: 'utf8'}))
-        .filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
-        .filter(c => Number(c.difficultyLevel) >= from)
-        .filter(c => Number(c.difficultyLevel) <= to);// && c.difficultyLevel >= from && c.difficultyLevel <= to);
+    let cubes = JSON.parse(fs.readFileSync('./config/database.json', {encoding: 'utf8'}));
+        // .filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
+        // .filter(c => Number(c.difficultyLevel) >= from)
+        // .filter(c => Number(c.difficultyLevel) <= to);// && c.difficultyLevel >= from && c.difficultyLevel <= to);
 
     return cubes;
 }

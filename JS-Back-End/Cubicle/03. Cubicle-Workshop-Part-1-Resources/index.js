@@ -1,6 +1,9 @@
 const express = require("express");
 const handlebars = require("express-handlebars");
+const mongoose = require('mongoose');
+
 const routes = require('./config/routes');
+const {databaseInitialize} = require('./config/database');
 
 const app = express();
 const port = 5000;
@@ -16,6 +19,12 @@ app.engine('hbs', handlebars.engine({
 
 app.set('view engine', 'hbs');
 
-app.listen(port, () => {
-    console.log(`Server listening on port: ${port}...`)
-});
+databaseInitialize()
+    .then(() =>{
+        app.listen(port, () => {
+            console.log(`Server listening on port: ${port}...`)
+        });
+    }) 
+    .catch((e) => {
+        console.log(e);
+    });
