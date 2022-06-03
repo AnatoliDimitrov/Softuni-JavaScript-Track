@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const service = require('../services/createService');
 
 router.get('/', (req, res) => {
     res.render('create');
@@ -6,7 +7,11 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     let {name, description, imageUrl, difficultyLevel} = req.body;
-    res.redirect('/');
+
+    service.addCube(name, description, imageUrl, difficultyLevel)
+    .then(() => {
+        res.redirect('/');
+    });
 });
 
 module.exports = router;

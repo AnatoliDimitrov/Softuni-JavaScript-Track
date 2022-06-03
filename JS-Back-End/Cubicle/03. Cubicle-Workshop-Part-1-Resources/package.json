@@ -12,7 +12,8 @@
     "fs": "^0.0.1-security",
     "name": "file:",
     "nodemon": "^2.0.16",
-    "uniqid": "^5.0.3"
+    "uniqid": "^5.0.3",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "start": "nodemon ./index.js"

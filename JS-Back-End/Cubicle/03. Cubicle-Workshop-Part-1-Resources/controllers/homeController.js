@@ -11,4 +11,9 @@ router.get('/about', (req, res) => {
     res.render('about');
 });
 
+router.get('/details/:id', (req, res) => {
+    let cube = service.getCubes().filter(c => c.id === req.params.id)[0];
+    res.render('details', {cube});
+})
+
 module.exports = router;
