@@ -14,6 +14,13 @@ const cubeSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
         required: true,
+        validate:{
+           // validator: /^http?/g,
+            validator: function(){
+                return this.imageUrl.startsWith('http');
+            },
+            message: 'URL is not starting with http or https!'
+        }
 
     },
     difficultyLevel: {
@@ -22,10 +29,6 @@ const cubeSchema = new mongoose.Schema({
         min: 1,
         max: 6,
     }
-});
-
-cubeSchema.path('imageUrl').validate(function() {
-    return this.imageUrl.startsWith('http');
 });
 
 const Cube = mongoose.model('Cube', cubeSchema);

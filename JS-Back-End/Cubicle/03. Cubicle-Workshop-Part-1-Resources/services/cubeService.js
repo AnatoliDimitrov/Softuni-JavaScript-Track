@@ -1,19 +1,12 @@
-const fs = require('fs/promises');
-const uuid = require('uuid');
+const Cube = require('../models/Cube');
+const { Types } = require('mongoose');
 
 exports.addCube = async (cube) => {
-    let cubes = await JSON.parse(await fs.readFile('./config/database.json', {encoding: 'utf8'}));
-
-    cubes.push(cube);
-
-    let str = JSON.stringify(cubes, '', 4);
-
-    await fs.writeFile('./config/database.json', str, {encoding: 'utf8'});
+    cube._id = new Types.ObjectId();
+    return await Cube.create(cube);
 };
 
 exports.getCube = async (req) => {
-    let cubes = JSON.parse(await fs.readFile('./config/database.json', {encoding: 'utf8'}));
-    let cube = cubes.filter(c => c.id === req.params.id)[0];
-
+    let cube = await Cube.findById(req.params.id).lean();
     return cube;
 }

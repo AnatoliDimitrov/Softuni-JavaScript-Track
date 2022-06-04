@@ -10,7 +10,7 @@ router.post('/create', (req, res) => {
     res.redirect('/');
 });
 
-router.get('/details', async (req, res) => {
+router.get('/details/:id', async (req, res) => {
     let cube = await service.getCube(req);
     res.render('details', {cube});
 });
