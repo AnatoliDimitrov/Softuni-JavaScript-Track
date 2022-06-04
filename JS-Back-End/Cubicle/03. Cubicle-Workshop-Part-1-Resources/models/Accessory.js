@@ -14,7 +14,11 @@ const accessorySchema = new mongoose.Schema({
     imageUrl: {
         type: String,
         required: true,
-    }
+    },
+    cubes: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Cube'
+    }]
 });
 
 accessorySchema.path('imageUrl').validate(function() {
@@ -23,4 +27,4 @@ accessorySchema.path('imageUrl').validate(function() {
 
 const Accessory = mongoose.model('Accessory', accessorySchema);
 
-module.exports = Cube;
+module.exports = Accessory;

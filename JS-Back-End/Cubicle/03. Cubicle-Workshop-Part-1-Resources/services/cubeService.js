@@ -7,6 +7,6 @@ exports.addCube = async (cube) => {
 };
 
 exports.getCube = async (req) => {
-    let cube = await Cube.findById(req.params.id).lean();
+    let cube = await Cube.findById(req.params.id).lean().populate('accessories');
     return cube;
 }
