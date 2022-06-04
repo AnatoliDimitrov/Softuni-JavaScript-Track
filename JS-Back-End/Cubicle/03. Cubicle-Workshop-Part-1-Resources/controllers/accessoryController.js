@@ -13,7 +13,7 @@ router.post('/create', async (req, res) => {
 
 router.get('/attach/:id', async (req, res) => {
     let cube = await cubeService.getCube(req);
-    let accessories = await service.getAll();
+    let accessories = await service.getAllWithoutIncluded(cube); 
     res.render('attachAccessory', {cube, accessories});
 });
 

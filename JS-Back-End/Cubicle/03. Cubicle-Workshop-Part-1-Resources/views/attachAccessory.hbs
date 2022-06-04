@@ -8,15 +8,16 @@
             <select id="accessory" name="accessory" />
             {{#each accessories}}
             <option value="{{_id}}">{{name}}</option>
-            {{else}}
-            <h3 class="italic">This cube has all available accessories so far or there is no available at all...</h3>
             {{/each}}
             </select>
-            <input type="hidden", name="cubeId" value="{{cube._id}}">
-            {{!-- {{#unless accessories}} --}}
+            <input type="hidden" , name="cubeId" value="{{cube._id}}">
+            {{#if accessories.length}}
             <input type="submit" value="Attach">
-            {{!-- {{/unless}} --}}
+            {{/if}}
         </form>
+        {{#if cube.accessories.length}}
+        <h3 class="italic">This cube has all available accessories so far or there is no available at all...</h3>
+        {{/if}}
         <a class="btn" href="/cube/details/{{cube._id}}">Back</a>
     </div>
 </main>
