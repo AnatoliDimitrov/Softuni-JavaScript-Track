@@ -37,6 +37,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
+    res.clearCookie(constants.cookieName);
     res.redirect('/');
 });
 

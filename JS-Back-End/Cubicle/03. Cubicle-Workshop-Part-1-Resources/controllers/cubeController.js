@@ -14,7 +14,12 @@ router.post('/create', isAuthenticated, (req, res) => {
 
 router.get('/details/:id', async (req, res) => {
     let cube = await service.getCube(req);
-    res.render('details', { cube });
+    let cubeOwner = false;
+    if (req.user) {
+        cubeOwner = cube.creator == req.user.id;
+    }
+    
+    res.render('details', { cube, cubeOwner });
 });
 
 router.get('/edit/:id', isAuthenticated, async (req, res) => {
