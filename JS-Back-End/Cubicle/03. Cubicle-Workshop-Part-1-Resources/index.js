@@ -1,6 +1,8 @@
 const express = require("express");
 const handlebars = require("express-handlebars");
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const {authentication} = require('./middlewares/userMiddleware');
 
 const routes = require('./config/routes');
 const { databaseInitialize } = require('./config/database');
@@ -10,7 +12,9 @@ const port = 5000;
 
 
 app.use('/static', express.static('static'));
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
+app.use(authentication);
 app.use(routes);
 
 app.get('*', function (req, res) {

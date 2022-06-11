@@ -22,10 +22,20 @@ exports.getCube = async (req) => {
     return cube;
 }
 
-exports.editCube = async (cube) => {
+exports.editCube = async (cubeId, data) => {
+    const cube = await Cube.findByIdAndUpdate(cubeId, data);
     return cube;
 }
 
 exports.deleteCube = async (cube) => {
-    return cube;
+    try {
+        let result = await Cube.findByIdAndDelete(cube._id);
+        if (result) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        return false;
+    }
 }
