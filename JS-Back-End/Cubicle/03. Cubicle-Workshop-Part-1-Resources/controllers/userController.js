@@ -14,7 +14,7 @@ router.post('/register', async (req, res) => {
     if (result) {
         res.redirect('/user/login');
     } else {
-        return;
+        res.redirect('/user/register');
     }
 });
 
@@ -22,10 +22,15 @@ router.get('/login', (req, res) => {
     res.render('login');
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
     const {username, password} = req.body;
-    console.log(req.body)
-    res.redirect('/');
+    const result = await service.userLogin(username, password);
+    if (result) {
+        console,console.log(result);
+        res.redirect('/');
+    } else {
+        res.redirect('/user/login');
+    }
 });
 
 router.get('/logout', (req, res) => {
