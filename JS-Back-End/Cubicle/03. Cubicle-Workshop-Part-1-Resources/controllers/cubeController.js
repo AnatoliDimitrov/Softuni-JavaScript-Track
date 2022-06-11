@@ -15,4 +15,26 @@ router.get('/details/:id', async (req, res) => {
     res.render('details', {cube});
 });
 
+router.get('/edit/:id', async (req, res) => {
+    let cube = await service.getCube(req);
+    let options = service.createOptions(cube.difficultyLevel);
+    res.render('editCube', {cube, options});
+});
+
+router.post('/edit/:id', async (req, res) => {
+    let cube = await service.getCube(req);
+    res.redirect(`/cube/details/${cube._id}`);
+});
+
+router.get('/delete/:id', async (req, res) => {
+    let cube = await service.getCube(req);
+    let options = service.createOptions(cube.difficultyLevel);
+    res.render('deleteCube', {cube, options});
+});
+
+router.post('/delete/:id', async (req, res) => {
+    let cube = await service.getCube(req);
+    res.redirect('/');
+});
+
 module.exports = router;
