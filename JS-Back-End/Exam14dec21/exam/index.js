@@ -5,17 +5,18 @@ const cookieParser = require('cookie-parser');
 const router = require('./routes');
 const { databaseInitialize } = require('./config/database');
 const { PORT } = require('./config/environment');
+const {authentication} = require('./middlewares/userMiddleware');
 
 const app = express();
 
+app.use(express.urlencoded({ extended: false }));
 app.use('/static', express.static('static'));
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: false }));
-//app.use(authentication);
+app.use(authentication);
 app.use(router);
 
 app.get('*', function (req, res) {
-    res.status(404).render('404');
+    res.status(404).render('home/404');
 });
 
 
