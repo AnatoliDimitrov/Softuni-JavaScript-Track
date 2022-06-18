@@ -1,0 +1,51 @@
+const mongoose = require('mongoose');
+const User = require('../models/User');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const constants = require('../constants');
+const { promisify } = require('util');
+
+exports.userRegister = async (username, password) => {
+    try {
+        password = await bcrypt.hash(password, constants.SALT_ROUNDS);
+        const user = {
+            username,
+            password,
+        };
+        await User.create(user);
+        return user;
+    } catch (error) {
+        return { message: 'Something went wrong' }
+    }
+}
+
+exports.userLogin = async (username, password) => {
+    try {
+        const user = await User.findOne({ username }).lean();
+        if (!user) {
+            return { message: 'Invalid Login' };
+        }
+        const isValidPass = await bcrypt.compare(password, user.password);
+        if (isValidPass) {
+            return user;
+        } else {
+            return { message: 'Invalid Login' };
+        }
+    } catch (error) {
+        return { message: 'Something went wrong' };
+    }
+}
+
+exports.createToken = (user) => {
+    // const jwtPromisify = promisify(jwt.sign);
+    // jwtPromisify({ id: user._id, username: user.username }, constants.SECRET, { expiresIn: '5d' });
+    let token = new Promise((resolve, reject) => {
+        jwt.sign({ id: user._id, username: user.username }, constants.SECRET, { expiresIn: '5d' }, (err, decodedToken) => {
+            if (err) {
+                return reject({ message: err });
+            }
+            resolve(decodedToken);
+        });
+    });
+    return token;
+}
