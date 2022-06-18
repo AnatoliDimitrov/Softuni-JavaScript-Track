@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {userRegister, userLogin, createToken} = require('../services/userService');
+const { userRegister, userLogin, createToken } = require('../services/userService');
 const constants = require('../constants');
 const { isGuest, isAuthenticated } = require('../middlewares/userMiddleware');
 
@@ -8,28 +8,28 @@ router.get('/register', isGuest, (req, res) => {
 });
 
 router.post('/register', isGuest, async (req, res) => {
-    const {username, password, repeatPassword} = req.body;
+    const { username, password, repeatPassword } = req.body;
     if (password != repeatPassword) {
-        return res.render('user/register', {error: 'Password mismatch'});
+        return res.render('user/register', { error: 'Password mismatch' });
     }
     const user = await userRegister(username, password);
 
     if (user.message) {
-        return res.render('user/register', {error: user.message});
+        return res.render('user/register', { error: user.message });
     }
-///////////////////If register logins the same time///////////////////
+    ///////////////////If register logins the same time///////////////////
     const token = await createToken(user);
 
     if (token.message) {
-        return res.render('user/register', {error: token.message});
+        return res.render('user/register', { error: token.message });
     }
 
-    res.cookie(constants.COOKIE_NAME, token, {httpOnly: true});
+    res.cookie(constants.COOKIE_NAME, token, { httpOnly: true });
     res.redirect('/');
-////////////////////////////////////////////////////////////////
-/////////////////////If send to login///////////////////////////
+    ////////////////////////////////////////////////////////////////
+    /////////////////////If send to login///////////////////////////
     //res.render('user/login');
-////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
 });
 
 router.get('/login', isGuest, (req, res) => {
@@ -37,21 +37,21 @@ router.get('/login', isGuest, (req, res) => {
 });
 
 router.post('/login', isGuest, async (req, res) => {
-    const {username, password} = req.body;
+    const { username, password } = req.body;
 
     const user = await userLogin(username, password);
 
     if (user.message) {
-        return res.render('user/login', {error: user.message});
+        return res.render('user/login', { error: user.message });
     }
 
     const token = await createToken(user);
 
     if (token.message) {
-        return res.render('user/login', {error: token.message});
+        return res.render('user/login', { error: token.message });
     }
 
-    res.cookie(constants.COOKIE_NAME, token, {httpOnly: true});
+    res.cookie(constants.COOKIE_NAME, token, { httpOnly: true });
     res.redirect('/');
 });
 

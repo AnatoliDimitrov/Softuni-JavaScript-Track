@@ -5,7 +5,8 @@ const cookieParser = require('cookie-parser');
 const router = require('./routes');
 const { databaseInitialize } = require('./config/database');
 const { PORT } = require('./config/environment');
-const {authentication} = require('./middlewares/userMiddleware');
+const { authentication } = require('./middlewares/userMiddleware');
+const { errorHandler } = require('./middlewares/errorHandlerMiddleware');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use('/static', express.static('static'));
 app.use(cookieParser());
 app.use(authentication);
 app.use(router);
+app.use(errorHandler);
 
 app.get('*', function (req, res) {
     res.status(404).render('home/404');
