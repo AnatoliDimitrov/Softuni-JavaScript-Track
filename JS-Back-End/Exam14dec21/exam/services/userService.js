@@ -5,15 +5,16 @@ const jwt = require('jsonwebtoken');
 const constants = require('../constants');
 const { promisify } = require('util');
 
-exports.userRegister = async (username, password) => {
+exports.userRegister = async (username, password, address) => {
     try {
         password = await bcrypt.hash(password, constants.SALT_ROUNDS);
         const user = {
             username,
             password,
+            address,
         };
         await User.create(user);
-        return user;
+        return await User.findOne({ username }).lean();
     } catch (error) {
         return { message: 'Something went wrong' }
     }

@@ -8,11 +8,11 @@ router.get('/register', isGuest, (req, res) => {
 });
 
 router.post('/register', isGuest, async (req, res) => {
-    const { username, password, repeatPassword } = req.body;
-    if (password != repeatPassword) {
-        return res.render('user/register', { error: 'Password mismatch' });
+    const { username, password, repeatPassword, address  } = req.body;
+    if (password != repeatPassword && password.length >= 3) {
+        return res.render('user/register', { error: 'Password mismatch or shrter than 3 characters' });
     }
-    const user = await userRegister(username, password);
+    const user = await userRegister(username, password, address);
 
     if (user.message) {
         return res.render('user/register', { error: user.message });
@@ -37,7 +37,7 @@ router.get('/login', isGuest, (req, res) => {
 });
 
 router.post('/login', isGuest, async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password} = req.body;
 
     const user = await userLogin(username, password);
 

@@ -10,21 +10,21 @@ exports.authentication = async (req, res, next) => {
     const token = req.cookies[constants.COOKIE_NAME];
 
     if (token) {
-            //let decodedToken = await jwtVerify(token, constants.SECRET);
+            let decodedToken = await jwtVerify(token, constants.SECRET);
 
-            jwt.verify(token, constants.SECRET,((err, decodedToken) => {
-                if (err) {
-                    res.clearCookie(constants.COOKIE_NAME);
-                    return next(err);
-                }
+            // jwt.verify(token, constants.SECRET,((err, decodedToken) => {
+            //     if (err) {
+            //         res.clearCookie(constants.COOKIE_NAME);
+            //         return next(err);
+            //     }
 
                 req.user = decodedToken;
                 res.locals.user = decodedToken;
 
-                next();
-            }))
+                return next();
+            // }))
     } else {
-        next();
+        return next();
     }
 };
 ///////////////////////////////////////Becareful where redirects////////////////////////////////////
