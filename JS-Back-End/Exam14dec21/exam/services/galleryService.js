@@ -2,5 +2,9 @@ const mongoose = require('mongoose');
 const Publication = require('../models/publication');
 
 exports.getAllLeaned = async () => {
-    return await Publication.find().lean();
+    try {
+        return await Publication.find().lean();
+    } catch (error) {
+        return { message: error.message }
+    }
 }

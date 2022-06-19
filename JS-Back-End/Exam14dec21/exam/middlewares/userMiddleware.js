@@ -38,7 +38,7 @@ exports.isAuthenticated = (req, res, next) => {
 ///////////////////////////////////////Becareful where redirects////////////////////////////////////
 exports.isGuest = (req, res, next) => {
     if (req.user) {
-        return res.render('user/login');
+        return res.redirect('/');
     }
 
     next();

@@ -15,10 +15,10 @@ const userSchema = new mongoose.Schema({
         maxlength: 20,
         required: true,
     },
-    publications: [{
+    myPublications: [{
         type: mongoose.Types.ObjectId,
         ref: 'Publication'
-    }]
+    }],
 });
 
 const User = mongoose.model('User', userSchema);

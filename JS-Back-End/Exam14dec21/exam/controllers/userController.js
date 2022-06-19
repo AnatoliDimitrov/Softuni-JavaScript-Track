@@ -14,6 +14,10 @@ router.post('/register', isGuest, async (req, res) => {
     }
     const user = await userRegister(username, password, address);
 
+    if (user == null) {
+        return res.render('404', { error: 'Non existend user!' });
+    }
+
     if (user.message) {
         return res.render('user/register', { error: user.message });
     }
@@ -40,6 +44,10 @@ router.post('/login', isGuest, async (req, res) => {
     const { username, password} = req.body;
 
     const user = await userLogin(username, password);
+
+    if (user == null) {
+        return res.render('404', { error: 'Non existend user!' });
+    }
 
     if (user.message) {
         return res.render('user/login', { error: user.message });

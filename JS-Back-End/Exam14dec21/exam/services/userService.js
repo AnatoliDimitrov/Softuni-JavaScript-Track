@@ -33,7 +33,41 @@ exports.userLogin = async (username, password) => {
             return { message: 'Invalid Login' };
         }
     } catch (error) {
-        return { message: 'Something went wrong' };
+        return { message: error.message };
+    }
+}
+
+exports.getOne = async (userId) => {
+    try {
+        const user = await User.findById(userId).populate('myPublications').lean();
+        return user;
+    } catch (error) {
+        return { message: error.message };
+    }
+}
+
+exports.saveMine = async (userId, modelId) => {
+    try {
+        const user = await User.findById(userId);
+        
+        user.myPublications.push(modelId);
+
+        user.save();
+    } catch (error) {
+        return { message: error.message };
+    }
+}
+
+exports.deleteMine = async (userId, modelId) => {
+    try {
+        const user = await User.findById(userId);
+        
+        const filterd = user.myPublications.filter(x => x._id != modelId);
+
+        user.myPublications = filterd;
+        user.save();
+    } catch (error) {
+        return { message: error.message };
     }
 }
 
