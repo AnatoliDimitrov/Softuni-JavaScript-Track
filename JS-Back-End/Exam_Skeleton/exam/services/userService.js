@@ -16,7 +16,7 @@ exports.userRegister = async (username, password, address) => {
         await User.create(user);
         return await User.findOne({ username }).lean();
     } catch (error) {
-        return { message: 'Something went wrong' }
+        return { message: error.message }
     }
 }
 
