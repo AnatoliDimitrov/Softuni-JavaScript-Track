@@ -5,13 +5,13 @@ const jwt = require('jsonwebtoken');
 const constants = require('../constants');
 const { promisify } = require('util');
 
-exports.userRegister = async (username, password, address) => {
+exports.userRegister = async (username, password, email) => {
     try {
         password = await bcrypt.hash(password, constants.SALT_ROUNDS);
         const user = {
             username,
             password,
-            address,
+            email,
         };
         await User.create(user);
         return await User.findOne({ username }).lean();
@@ -20,9 +20,9 @@ exports.userRegister = async (username, password, address) => {
     }
 }
 
-exports.userLogin = async (username, password) => {
+exports.userLogin = async (email, password) => {
     try {
-        const user = await User.findOne({ username }).lean();
+        const user = await User.findOne({ email }).lean();
         if (!user) {
             return { message: 'Invalid Login' };
         }
@@ -75,7 +75,7 @@ exports.createToken = (user) => {
     // const jwtPromisify = promisify(jwt.sign);
     // jwtPromisify({ id: user._id, username: user.username }, constants.SECRET, { expiresIn: '5d' });
     let token = new Promise((resolve, reject) => {
-        jwt.sign({ id: user._id, username: user.username }, constants.SECRET, { expiresIn: '5d' }, (err, decodedToken) => {
+        jwt.sign({ id: user._id, username: user.username, email: user.email }, constants.SECRET, { expiresIn: '5d' }, (err, decodedToken) => {
             if (err) {
                 return reject({ message: err });
             }

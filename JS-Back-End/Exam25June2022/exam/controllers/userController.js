@@ -8,11 +8,11 @@ router.get('/register', isGuest, (req, res) => {
 });
 
 router.post('/register', isGuest, async (req, res) => {
-    const { username, password, repeatPassword, address  } = req.body;
+    const { username, password, repeatPassword, email  } = req.body;
     if (password != repeatPassword && password.length >= 3) {
         return res.render('user/register', { error: 'Password mismatch or shrter than 3 characters' });
     }
-    const user = await userRegister(username, password, address);
+    const user = await userRegister(username, password, email);
 
     if (user == null) {
         return res.render('404', { error: 'Non existend user!' });
@@ -41,9 +41,9 @@ router.get('/login', isGuest, (req, res) => {
 });
 
 router.post('/login', isGuest, async (req, res) => {
-    const { username, password} = req.body;
+    const { email, password} = req.body;
 
-    const user = await userLogin(username, password);
+    const user = await userLogin(email, password);
 
     if (user == null) {
         return res.render('404', { error: 'Non existend user!' });
