@@ -517,27 +517,27 @@
             });
         },
         popupMobileMenu: function (e) {
-            $('.hamberger-button').on('click', function (e) {
+            $("body").on('click', '.hamberger-button', function (e) {
                 $('.popup-mobile-menu').addClass('active');
             });
 
-            $('.close-menu').on('click', function (e) {
+            $("body").on('click', '.close-menu', function (e) {
                 $('.popup-mobile-menu').removeClass('active');
                 $('.popup-mobile-menu .mainmenu .has-droupdown > a, .popup-mobile-menu .mainmenu .with-megamenu > a').siblings('.submenu, .rn-megamenu').removeClass('active').slideUp('400');
                 $('.popup-mobile-menu .mainmenu .has-droupdown > a, .popup-mobile-menu .mainmenu .with-megamenu > a').removeClass('open')
             });
 
-            $('.popup-mobile-menu .mainmenu .has-droupdown > a, .popup-mobile-menu .mainmenu .with-megamenu > a').on('click', function (e) {
+            $("body").on('click', '.popup-mobile-menu .mainmenu .has-droupdown > a, .popup-mobile-menu .mainmenu .with-megamenu > a', function (e) {
                 e.preventDefault();
                 $(this).siblings('.submenu, .rn-megamenu').toggleClass('active').slideToggle('400');
                 $(this).toggleClass('open')
             })
 
-            $('.popup-mobile-menu').on('click', function (e) {
+            $("body").on('click', '.popup-mobile-menu', function (e) {
                 e.target === this && $('.popup-mobile-menu').removeClass('active') && $('.popup-mobile-menu .mainmenu .has-droupdown > a, .popup-mobile-menu .mainmenu .with-megamenu > a').siblings('.submenu, .rn-megamenu').removeClass('active').slideUp('400') && $('.popup-mobile-menu .mainmenu .has-droupdown > a, .popup-mobile-menu .mainmenu .with-megamenu > a').removeClass('open');
             });
 
-            $('.one-page-vavigation-popup .mainmenu li > a').on('click' , function (e) {
+            $("body").on('click', '.one-page-vavigation-popup .mainmenu li > a', function (e) {
                 e.preventDefault();
                 $('.popup-mobile-menu').removeClass('active');
                 $('.popup-mobile-menu .mainmenu li > a').siblings('.submenu').removeClass('active');
