@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export const Header = () => {
     return (
         <header className="rn-header haeder-default header--sticky">
@@ -5,40 +7,45 @@ export const Header = () => {
                 <div className="header-inner">
                     <div className="header-left">
                         <div className="logo-thumbnail logo-custom-css">
-                            <a className="logo-light" href="index.html"><img src="/images/logo/logo-white.png" alt="nft-logo" /></a>
-                            <a className="logo-dark" href="index.html"><img src="/images/logo/logo-dark.png" alt="nft-logo" /></a>
+                            <Link to="/" className="logo-light" ><img src="/images/logo/logo-white.png" alt="nft-logo" /></Link>
+                            <Link to="/" className="logo-dark" ><img src="/images/logo/logo-dark.png" alt="nft-logo" /></Link>
                         </div>
                         <div className="mainmenu-wrapper">
                             <nav id="sideNav" className="mainmenu-nav d-none d-xl-block">
-                                {/* <!-- Start Mainmanu Nav --> */}
+                                
                                 <ul className="mainmenu">
                                     <li>
-                                        <a href="Home.html">Home</a>
+                                        <Link to="/">Home</Link>
                                     </li>
                                     <li>
-                                        <a href="Catalog.html">Catalog</a>
+                                        <Link to="/catalog">Catalog</Link>
                                     </li>
                                     <li>
-                                        <a href="about.html">About</a>
+                                        <Link to="/about">About</Link>
                                     </li>
                                     <li>
-                                        <a href="contact.html">Contact</a>
+                                        <Link to="/contact">Contact</Link>
+                                    </li>
+                                    {/* TODO: if guest */}
+                                    <li>
+                                        <Link to="/authentication/login">Login</Link>
                                     </li>
                                     <li>
-                                        <a href="Profile.html">Profile</a>
+                                        <Link to="/authentication/register">Register</Link>
                                     </li>
+                                    {/* TODO: if user */}
                                     <li>
-                                        <a href="My.html">My NFTs</a>
+                                        <Link to="/product/create">Create</Link>
                                     </li>
                                 </ul>
-                                {/* <!-- End Mainmanu Nav --> */}
+                                
                             </nav>
                         </div>
                     </div>
                     <div className="header-right">
                         <div className="setting-option d-none d-lg-block">
                             <form className="search-form-wrapper" action="#">
-                                <input type="search" placeholder="Search Here" aria-label="Search" />
+                                <input type="search" placeholder="Search NFT" aria-label="Search" />
                                 <div className="search-icon">
                                     <button><i className="feather-search"></i></button>
                                 </div>
@@ -59,44 +66,18 @@ export const Header = () => {
                         <div className="header_admin" id="header_admin">
                             <div className="setting-option rn-icon-list user-account">
                                 <div className="icon-box">
-                                    <a href="author.html"><img src="/images/icons/boy-avater.png" alt="Images" /></a>
+                                    <Link to="/user/edit-profile"><img src="/images/icons/boy-avater.png" alt="Images" /></Link>
                                     <div className="rn-dropdown">
                                         <div className="rn-inner-top">
-                                            <h4 className="title"><a href="product-details.html">Christopher William</a></h4>
-                                            <span><a href="#">Set Display Name</a></span>
+                                            <h4 className="title"><Link to="product-details.html">Christopher William</Link></h4>
+                                            <span>c.william@mail.bg</span>
                                         </div>
-                                        <div className="rn-product-inner">
-                                            <ul className="product-list">
-                                                <li className="single-product-list">
-                                                    <div className="thumbnail">
-                                                        <a href="product-details.html"><img src="/images/portfolio/portfolio-07.jpg" alt="Nft Product Images" /></a>
-                                                    </div>
-                                                    <div className="content">
-                                                        <h6 className="title"><a href="product-details.html">Balance</a></h6>
-                                                        <span className="price">25 ETH</span>
-                                                    </div>
-                                                    <div className="button"></div>
-                                                </li>
-                                                <li className="single-product-list">
-                                                    <div className="thumbnail">
-                                                        <a href="product-details.html"><img src="/images/portfolio/portfolio-01.jpg" alt="Nft Product Images" /></a>
-                                                    </div>
-                                                    <div className="content">
-                                                        <h6 className="title"><a href="product-details.html">Balance</a></h6>
-                                                        <span className="price">25 ETH</span>
-                                                    </div>
-                                                    <div className="button"></div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div className="add-fund-button mt--20 pb--20">
-                                            <a className="btn btn-primary-alta w-100" href="connect.html">Add Your More Funds</a>
-                                        </div>
+                                        
                                         <ul className="list-inner">
-                                            <li><a href="author.html">My Profile</a></li>
-                                            <li><a href="edit-profile.html">Edit Profile</a></li>
-                                            <li><a href="connect.html">Manage funds</a></li>
-                                            <li><a href="login.html">Sign Out</a></li>
+                                            <li><Link to="/user/edit-profile">Edit Profile</Link></li>
+                                            {/* TODO: if user */}
+                                            <li><Link to="/authentication/logout">Sign Out</Link></li>
+                                            <li><Link to="/user/my-collection">My Collection</Link></li>
                                         </ul>
                                     </div>
                                 </div>

@@ -11713,7 +11713,7 @@ body.sal-disabled [data-sal|=flip] {
 }
 
 .header_admin {
-  display: none;
+  display: block;
 }
 
 .rn-slider-area.fullscreen-slide {
