@@ -20,8 +20,8 @@ export const MyCollection = () => {
                 </div>
             </div>
 
-            <div class="rn-collection-area rn-section-gapTop">
-                <div class="container">
+            <div className="rn-collection-area rn-section-gapTop">
+                <div className="container">
                     <div className="row g-5">
                         <div className="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
                             <Link to="product-details.html" className="rn-collection-inner-one">

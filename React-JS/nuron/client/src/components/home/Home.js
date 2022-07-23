@@ -40,7 +40,7 @@ export const Home = () => {
 
                 <div className="row g-5">
                     <div  className="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-                        <Link to="product-details.html" className="rn-collection-inner-one">
+                        <Link to="/product/details" className="rn-collection-inner-one">
                             <div className="collection-wrapper">
                                 <div className="collection-big-thumbnail">
                                     <img src="/images/collection/collection-lg-01.jpg" alt="Nft_Profile" />
@@ -54,7 +54,7 @@ export const Home = () => {
                     </div>
 
                     <div  className="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-                        <Link to="product-details.html" className="rn-collection-inner-one">
+                        <Link to="/product/details" className="rn-collection-inner-one">
                             <div className="collection-wrapper">
                                 <div className="collection-big-thumbnail">
                                     <img src="/images/collection/collection-lg-03.jpg" alt="Nft_Profile" />
@@ -68,7 +68,7 @@ export const Home = () => {
                     </div>
 
                     <div  className="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-                        <Link to="product-details.html" className="rn-collection-inner-one">
+                        <Link to="/product/details" className="rn-collection-inner-one">
                             <div className="collection-wrapper">
                                 <div className="collection-big-thumbnail">
                                     <img src="/images/collection/collection-lg-02.jpg" alt="Nft_Profile" />
@@ -82,7 +82,7 @@ export const Home = () => {
                     </div>
 
                     <div  className="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-                        <Link to="product-details.html" className="rn-collection-inner-one">
+                        <Link to="/product/details" className="rn-collection-inner-one">
                             <div className="collection-wrapper">
                                 <div className="collection-big-thumbnail">
                                     <img src="/images/collection/collection-lg-04.jpg" alt="Nft_Profile" />

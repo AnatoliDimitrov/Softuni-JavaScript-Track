@@ -1,6 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const cors = require("cors");
+const bodyParser = require('body-parser');
+const fileupload = require("express-fileupload");
 
 const db = require('./config/db');
 const { port, dbConnection } = require('./config/config');
@@ -8,6 +11,13 @@ const { port, dbConnection } = require('./config/config');
 const allowed = ['.js', '.css', '.png', '.jpg', '.jpeg', '.ico'];
 
 const app = express();
+
+app.use(cors());
+app.use(fileupload());
+app.use(express.static("files"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const start = async () => {
   try {
     await db(dbConnection);

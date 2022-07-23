@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require('uuid');
+
 const { nftModel } = require('../models/Nft');
 const { errorHandler } = require('../utils/errorHandler');
 const { ValidationError } = require('../utils/createValidationError');
@@ -19,14 +21,26 @@ const getNft = async (req, res) => {
 };
 
 const addNft = async (req, res) => {
-  const { name, description, imageUrl, price} = req.body;
-  const data = { name, description, imageUrl, price };
+  let fileName = '';
+
+  if (req.files) {
+    const file = req.files.file;
+    fileName = uuidv4();
+  
+    console.log(file)
+    console.log(req.body)
+  
+    file.mv(`${'../client/public/user-uploads/nfts'}/${fileName}`);
+  }
+  
+  let { name, description, imageUrl, price, owner} = req.body;
+  imageUrl = `${'/user-uploads/nfts/'}${fileName}`;
+  const data = { name, description, imageUrl, price, owner};
 
   try {
     const createdNft = await nftModel.create({ ...data });
     const nft = { ...data};
 
-    res.status(200).json({ nft });
   } catch (error) {
     errorHandler(error, res, req);
   }

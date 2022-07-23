@@ -11,11 +11,17 @@ const nftSchema = new mongoose.Schema({
     },
     description: {
         type: String,
+        required: true,
         minLength: [10, 'Description should be at least 10 characters long!'],
     },
     price: {
         type: Number,
+        required: true,
         min: [1, 'Price should be positive number!'],
+    },
+    owner: {
+        type: String,
+        required: true,
     },
 });
 

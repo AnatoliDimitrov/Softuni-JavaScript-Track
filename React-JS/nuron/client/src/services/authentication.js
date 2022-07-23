@@ -93,6 +93,7 @@ async function postWithoutAuth(body) {
 
 async function post(body) {
     try {
+        console.log(body);
         return await jsonRequest(constants.CURRENT, 'Post', body, true, false);
     } catch (err) {
         return err;

@@ -1,5 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from 'axios';
+
 import styles from './Create.module.css';
 import { createNft } from "../../../services/nftService";
 
@@ -8,10 +10,15 @@ export const Create = () => {
         name: '',
         description: '',
         price: 0,
-        imageUrl: '/images/portfolio/portfolio-05.jpg'
+        imageUrl: '',
+        picture: '',
+        pictureName: '',
+        owner: 'Anatoli Dimitrov',
     });
-
-    const [errors, setErrors] = useState({first: true});
+    const [file, setFile] = useState();
+    const [fileName, setFileName] = useState("");
+    const navigate = useNavigate();
+    const [errors, setErrors] = useState({ first: true });
 
     const changeHandler = (e) => {
         setValues(state => ({
@@ -52,12 +59,43 @@ export const Create = () => {
         }
     };
 
+    const saveFile = (e) => {
+        setValues(state => ({
+            ...state,
+            picture: e.target.files[0]
+        }));
+        setValues(state => ({
+            ...state,
+            pictureName: e.target.files[0].name
+        }));
+
+        setFile(e.target.files[0]);
+        setFileName(e.target.files[0].name);
+    };
+
     const onSubmitHandler = async (e) => {
         e.preventDefault();
 
-        const result = await createNft(values);
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("fileName", fileName);
+        formData.append("name", values.name);
+        formData.append("imageUrl", values.imageUrl);
+        formData.append("description", values.description);
+        formData.append("price", values.price);
+        formData.append("owner", values.owner);
 
-        console.log(result);
+
+        try {
+            const res = await axios.post(
+                "http://localhost:3005/api/nfts",
+                formData
+            );
+
+            navigate('/user/my-collection');
+        } catch (ex) {
+            console.log(ex);
+        }
     }
 
     let isValidForm = Object.values(errors).some(x => x);
@@ -82,46 +120,53 @@ export const Create = () => {
                 </div>
             </div>
 
-            <div className="create-area rn-section-gapTop">
-                <div className="container">
-                    <div className="row g-5">
-                        <div className="col-lg-3 offset-1 ml_md--0 ml_sm--0">
 
-                            <div className="upload-area">
+            <form onSubmit={onSubmitHandler} className="row">
 
-                                <div className="upload-formate mb--30">
-                                    <h6 className="title">
-                                        Upload file
-                                    </h6>
-                                    <p className="formate">
-                                        Drag or choose your file to upload
-                                    </p>
+                <div className="create-area rn-section-gapTop">
+                    <div className="container">
+                        <div className="row g-5">
+                            <div className="col-lg-3 offset-1 ml_md--0 ml_sm--0">
+
+                                <div className="upload-area">
+
+                                    <div className="upload-formate mb--30">
+                                        <h6 className="title">
+                                            Upload file
+                                        </h6>
+                                        <p className="formate">
+                                            Drag or choose your file to upload
+                                        </p>
+                                    </div>
+
+                                    <div className="brows-file-wrapper">
+
+                                        <input name="picture"
+                                            id="createinputfile"
+                                            type="file"
+                                            className="inputfile"
+                                            onChange={saveFile}
+                                        />
+                                        <img id="createfileImage" src={"/images/portfolio/portfolio-05.jpg"} alt="" data-black-overlay="6" />
+
+                                        <label htmlFor="createinputfile" title="No File Choosen">
+                                            <i className="feather-upload"></i>
+                                            <span className="text-center">Choose a File</span>
+                                            <p className="text-center mt--10">PNG, GIF, WEBP, MP4 or MP3. <br />    Max 1Gb.</p>
+                                        </label>
+                                    </div>
                                 </div>
 
-                                <div className="brows-file-wrapper">
 
-                                    <input name="createinputfile" id="createinputfile" type="file" className="inputfile" />
-                                    <img id="createfileImage" src={"/images/portfolio/portfolio-05.jpg"} alt="" data-black-overlay="6" />
-
-                                    <label htmlFor="createinputfile" title="No File Choosen">
-                                        <i className="feather-upload"></i>
-                                        <span className="text-center">Choose a File</span>
-                                        <p className="text-center mt--10">PNG, GIF, WEBP, MP4 or MP3. <br />    Max 1Gb.</p>
-                                    </label>
+                                <div className="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
+                                    <h5> Note: </h5>
+                                    <span> Service fee : <strong>2.5%</strong> </span> <br />
                                 </div>
+
                             </div>
 
-
-                            <div className="mt--100 mt_sm--30 mt_md--30 d-none d-lg-block">
-                                <h5> Note: </h5>
-                                <span> Service fee : <strong>2.5%</strong> </span> <br />
-                            </div>
-
-                        </div>
-
-                        <div className="col-lg-7">
-                            <div className="form-wrapper-one">
-                                <form onSubmit={onSubmitHandler} className="row" action="#">
+                            <div className="col-lg-7">
+                                <div className="form-wrapper-one">
 
                                     <div className="col-md-12">
                                         <div className="input-box pb--20">
@@ -165,12 +210,12 @@ export const Create = () => {
                                     <div className="col-md-4">
                                         <div className="input-box pb--20">
                                             <label htmlFor="dollerValue" className="form-label">Item Price in $</label>
-                                            <input 
-                                                id="dollerValue" 
-                                                type="number" 
-                                                name="price" 
-                                                placeholder="e. g. `20$`" 
-                                                onChange={changeHandler} 
+                                            <input
+                                                id="dollerValue"
+                                                type="number"
+                                                name="price"
+                                                placeholder="e. g. `20$`"
+                                                onChange={changeHandler}
                                                 value={values.price}
                                                 onBlur={minPrice}
                                             />
@@ -186,28 +231,28 @@ export const Create = () => {
 
                                     <div className="col-md-12">
                                         <div className="input-box">
-                                            <button 
-                                                type="submit" 
+                                            <button
+                                                type="submit"
                                                 className="btn btn-primary btn-large w-100"
                                                 disabled={isValidForm}
-                                                >
-                                                    Submit Item
-                                                </button>
+                                            >
+                                                Submit Item
+                                            </button>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
+
                             </div>
 
-                        </div>
-
-                        <div className="mt--100 mt_sm--30 mt_md--30 d-block d-lg-none">
-                            <h5> Note: </h5>
-                            <span> Service fee : <strong>2.5%</strong> </span> <br />
-                            <span> You will receive : <strong>25.00 ETH $50,000</strong></span>
+                            <div className="mt--100 mt_sm--30 mt_md--30 d-block d-lg-none">
+                                <h5> Note: </h5>
+                                <span> Service fee : <strong>2.5%</strong> </span> <br />
+                                <span> You will receive : <strong>25.00 ETH $50,000</strong></span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </>
     );
 };

@@ -8,7 +8,7 @@ export async function jsonRequest(url, method, body, isAuthorized, skipResult) {
     }
 
     if (['post', 'put', 'patch', 'delete'].includes(method.toLowerCase())) {
-        headers['Content-Type'] = 'application/json';
+        headers['Content-Type'] = 'application/x-www-form-urlencoded';
     }
 
     if (isAuthorized) {
