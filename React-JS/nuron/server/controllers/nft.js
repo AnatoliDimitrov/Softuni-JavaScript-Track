@@ -48,7 +48,23 @@ const addNft = async (req, res) => {
 
 const updateNft = async (req, res) => {
   const { nftId } = req.params;
-  const { name, description, imageUrl, price } = req.body;
+  let fileName = '';
+  
+
+  let { name, description, imageUrl, price } = req.body;
+
+  if (req.files) {
+    const file = req.files.file;
+    fileName = uuidv4();
+  
+    console.log(file)
+    console.log(req.body)
+    
+  imageUrl = `${'/user-uploads/nfts/'}${fileName}`;
+  
+    file.mv(`${'../client/public/user-uploads/nfts'}/${fileName}`);
+  }
+
   const data = { name, description, imageUrl, price };
 
   try {

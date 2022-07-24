@@ -1,9 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-export const Details = (props) => {
+import auth from '../../../services/authentication.js';
+
+export const Details = () => {
+    
+    const { nftId } = useParams();
+    const [nft, setNft] = useState({likers: []});
+    
+    useEffect(() => {
+        const prom = auth.getOne(nftId)
+        .then( result => {
+            setNft( result.nft )
+        });
+    }, []);
     return (
         <>
-
             <div className="rn-breadcrumb-inner ptb--30">
                 <div className="container">
                     <div className="row align-items-center">
@@ -21,8 +33,6 @@ export const Details = (props) => {
                 </div>
             </div>
 
-
-
             <div className="product-details-area rn-section-gapTop">
                 <div className="container">
                     <div className="row g-5">
@@ -35,7 +45,7 @@ export const Details = (props) => {
                                     <div className="tab-content rn-pd-content" id="v-pills-tabContent">
                                         <div className="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
                                             <div className="rn-pd-thumbnail">
-                                                <img src="/images/portfolio/lg/portfolio-01.jpg" alt="Nft_Profile" />
+                                                <img src={nft.imageUrl} alt="Nft_Profile" />
                                             </div>
                                         </div>
                                         <div className="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
@@ -58,40 +68,29 @@ export const Details = (props) => {
                         <div className="col-lg-5 col-md-12 col-sm-12 mt_md--50 mt_sm--60">
                             <div className="rn-pd-content-area">
                                 <div className="pd-title-area">
-                                    <h4 className="title">The Amazing Game</h4>
+                                    <h4 className="title">{nft.name}</h4>
                                     <div className="heart-count">
-                                        <span>33 Likes</span>
+                                        <span>{nft.likers.length} Likes</span>
                                     </div>
                                 </div>
 
-                                <div class="place-bet-area">
+                                <div className="place-bet-area">
                                     <h4>Description</h4>
-                                    <p>Mauris tempor, orci id pellentesque convallis, massa mi congue eros, sed
-                                        posuere
-                                        massa nunc quis
-                                        dui.
-                                        Integer ornare varius mi, in vehicula orci scelerisque sed. Fusce a massa
-                                        nisi.
-                                        Curabitur sit
-                                        amet
-                                        suscipit nisl. Sed eget nisl laoreet, suscipit enim nec, viverra eros. Nunc
-                                        imperdiet risus
-                                        leo,
-                                        in rutrum erat dignissim id.</p>
+                                    <p>{nft.description}</p>
                                 </div>
 
-                                <h6 class="title-name">
-                                    Price <span class="price">0.11$</span>
+                                <h6 className="title-name">
+                                    Price <span className="price">{nft.price}$</span>
                                 </h6>
 
                                 <div className="rn-bid-details">
                                     <div className="tab-wrapper-one">
                                         <nav className="tab-button-one">
                                             <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                                            <Link to="/product/edit"><button className="nav-link active" id="nav-home-tab" type="button" role="tab" aria-controls="nav-home">Edit</button></Link>
-                                                <button className="nav-link" id="nav-profile-tab" type="button" role="tab" aria-controls="nav-profile">Delete</button>
-                                                <button class="nav-link active" id="nav-contact-tab" type="button" role="tab" aria-controls="nav-contact">Buy</button>
-                                                <button class="nav-link" id="nav-like-tab" type="button" role="tab" aria-controls="nav-like">Like</button>
+                                                <Link to={`/product/edit/${nft._id}`}><button className="nav-link active" id="nav-home-tab" type="button" role="tab" aria-controls="nav-home">Edit</button></Link>
+                                                <Link to={`/product/delete/${nft._id}`}><button className="nav-link" id="nav-profile-tab" type="button" role="tab" aria-controls="nav-profile">Delete</button></Link>
+                                                <Link to={`/product/buy/${nft._id}`}><button className="nav-link active" id="nav-contact-tab" type="button" role="tab" aria-controls="nav-contact">Buy</button></Link>
+                                                <Link to={`/product/Like/${nft._id}`}><button className="nav-link" id="nav-like-tab" type="button" role="tab" aria-controls="nav-like">Like</button></Link>
                                             </div>
                                         </nav>
                                         <div className="tab-content rn-bid-content" id="nav-tabContent">

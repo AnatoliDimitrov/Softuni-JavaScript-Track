@@ -21,7 +21,7 @@ export const MobileMenu = () => {
                             <Link to="/">Home</Link>
                         </li>
                         <li>
-                            <Link to="/catalog">Catalog</Link>
+                            <Link to="/product/catalog">Catalog</Link>
                         </li>
                         <li>
                             <Link to="/about">About</Link>

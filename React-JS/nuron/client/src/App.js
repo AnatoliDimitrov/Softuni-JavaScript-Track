@@ -36,9 +36,9 @@ function App() {
                 <Route path="/user/edit-profile" element={<EditProfile />} />
                 <Route path="/user/my-collection" element={<MyCollection />} />
                 <Route path="/product/create" element={<Create />} />
-                <Route path="/product/edit" element={<Edit />} />
-                <Route path="/product/details" element={<Details />} />
-                <Route path="/catalog" element={<Catalog />} />
+                <Route path="/product/edit/:nftId" element={<Edit />} />
+                <Route path="/product/details/:nftId" element={<Details />} />
+                <Route path="/product/catalog" element={<Catalog />} />
                 <Route path="/*" element={<Error404 />} />
             </Routes>
 
