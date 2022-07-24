@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from 'axios';
 
 import styles from './Create.module.css';
-import { createNft } from "../../../services/nftService";
+import constants from '../../../services/constants.js';
 
 export const Create = () => {
     const [values, setValues] = useState({
@@ -87,12 +87,10 @@ export const Create = () => {
 
 
         try {
-            const res = await axios.post(
-                "http://localhost:3005/api/nfts",
+            const res = axios.post(
+                constants.NFTS,
                 formData
-            );
-
-            navigate('/user/my-collection');
+            ).then(navigate('/user/my-collection'));
         } catch (ex) {
             console.log(ex);
         }

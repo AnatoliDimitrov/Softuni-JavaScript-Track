@@ -23,6 +23,10 @@ const nftSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    likers: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'User'
+    }]
 });
 
 const nftModel = mongoose.model('Nft', nftSchema);

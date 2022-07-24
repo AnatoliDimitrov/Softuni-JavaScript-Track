@@ -1,6 +1,20 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+
+import auth from '../../services/authentication.js';
+
+import { OwnNft } from "./OwnNft.js";
 
 export const MyCollection = () => {
+    const [nfts, setNfts] = useState([]);
+    
+    useEffect(() => {
+        const prom = auth.getNfts()
+        .then( result => {
+            setNfts( result.nfts )
+        });
+    }, []);
+
     return (
         <>
             <div className="rn-breadcrumb-inner ptb--30">
@@ -23,61 +37,10 @@ export const MyCollection = () => {
             <div className="rn-collection-area rn-section-gapTop">
                 <div className="container">
                     <div className="row g-5">
-                        <div className="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-                            <Link to="product-details.html" className="rn-collection-inner-one">
-                                <div className="collection-wrapper">
-                                    <div className="collection-big-thumbnail">
-                                        <img src="/images/collection/collection-lg-01.jpg" alt="Nft_Profile" />
-                                    </div>
-                                    <div className="collection-deg">
-                                        <h6 className="title">Cubic Trad</h6>
-                                        <span className="items">27 Likes</span>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
-
-                        <div className="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-                            <Link to="product-details.html" className="rn-collection-inner-one">
-                                <div className="collection-wrapper">
-                                    <div className="collection-big-thumbnail">
-                                        <img src="/images/collection/collection-lg-03.jpg" alt="Nft_Profile" />
-                                    </div>
-                                    <div className="collection-deg">
-                                        <h6 className="title">Diamond Dog</h6>
-                                        <span className="items">20 Likes</span>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
-
-                        <div className="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-                            <Link to="product-details.html" className="rn-collection-inner-one">
-                                <div className="collection-wrapper">
-                                    <div className="collection-big-thumbnail">
-                                        <img src="/images/collection/collection-lg-02.jpg" alt="Nft_Profile" />
-                                    </div>
-                                    <div className="collection-deg">
-                                        <h6 className="title">Morgan11</h6>
-                                        <span className="items">15 Likes</span>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
-
-                        <div className="col-lg-4 col-xl-3 col-md-6 col-sm-6 col-12">
-                            <Link to="product-details.html" className="rn-collection-inner-one">
-                                <div className="collection-wrapper">
-                                    <div className="collection-big-thumbnail">
-                                        <img src="/images/collection/collection-lg-04.jpg" alt="Nft_Profile" />
-                                    </div>
-                                    <div className="collection-deg">
-                                        <h6 className="title">Orthogon#720</h6>
-                                        <span className="items">10 Likes</span>
-                                    </div>
-                                </div>
-                            </Link>
-                        </div>
+                        {nfts.length > 0
+                            ? nfts.filter(x => x.owner == 'Anatoli Dimitrov').map(n => <OwnNft key={n._id} nft={n}/>)
+                            : <h5>There are no NFTs yet...</h5>
+                        }
                     </div>
                 </div>
             </div>

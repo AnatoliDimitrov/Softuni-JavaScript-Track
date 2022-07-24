@@ -3,9 +3,9 @@ import { jsonRequest } from "./http.js";
 
 
 
-async function get() {
+function getNfts() {
     try {
-        let result = await jsonRequest(constants.CURRENT);
+        let result = jsonRequest(constants.NFTS);
         return result;
     } catch (err) {
         alert(err);
@@ -23,7 +23,7 @@ async function getMostRecent() {
 
 async function getMy(userId) {
     try {
-        let result = await jsonRequest(`${constants.CURRENT}${`?where=_ownerId%3D%22${userId}%22&sortBy=_createdOn%20desc`}`);
+        let result = await jsonRequest(`${constants.NFTS}${`?where=_ownerId%3D%22${userId}%22&sortBy=_createdOn%20desc`}`);
         return result;
     } catch (err) {
         alert(err);
@@ -33,7 +33,7 @@ async function getMy(userId) {
 
 async function getOne(id) {
     try {
-        let result = await jsonRequest(`${constants.CURRENT}/${id}`, 'get');
+        let result = await jsonRequest(`${constants.NFTS}/${id}`, 'get');
         return result;
     } catch (err) {
         alert(err);
@@ -67,7 +67,7 @@ async function like(body) {
 
 async function filterByUserId(id) {
     try {
-        let result = await jsonRequest(`${constants.CURRENT}?where=_ownerId%3D%22${id}%22`, 'get');
+        let result = await jsonRequest(`${constants.NFTS}?where=_ownerId%3D%22${id}%22`, 'get');
         return result;
     } catch (err) {
         alert(err);
@@ -76,7 +76,7 @@ async function filterByUserId(id) {
 
 async function filterByYear(year) {
     try {
-        let result = await jsonRequest(`${constants.CURRENT}?where=year%3D${year}`, 'get', undefined, true);
+        let result = await jsonRequest(`${constants.NFTS}?where=year%3D${year}`, 'get', undefined, true);
         return result;
     } catch (err) {
         alert(err);
@@ -85,7 +85,7 @@ async function filterByYear(year) {
 
 async function postWithoutAuth(body) {
     try {
-        await jsonRequest(constants.CURRENT, 'Post', body);
+        await jsonRequest(constants.NFTS, 'Post', body);
     } catch (err) {
         alert(err);
     }
@@ -94,7 +94,7 @@ async function postWithoutAuth(body) {
 async function post(body) {
     try {
         console.log(body);
-        return await jsonRequest(constants.CURRENT, 'Post', body, true, false);
+        return await jsonRequest(constants.NFTS, 'Post', body, true, false);
     } catch (err) {
         return err;
     }
@@ -102,7 +102,7 @@ async function post(body) {
 
 async function put(id, body) {
     try {
-        await jsonRequest(`${constants.CURRENT}/${id}`, 'put', body, true, true);
+        await jsonRequest(`${constants.NFTS}/${id}`, 'put', body, true, true);
     } catch (err) {
         alert(err);
     }
@@ -110,7 +110,7 @@ async function put(id, body) {
 
 async function del(id) {
     try {
-        await jsonRequest(`${constants.CURRENT}/${id}`, 'delete', undefined, true);
+        await jsonRequest(`${constants.NFTS}/${id}`, 'delete', undefined, true);
     } catch (err) {
         alert(err);
     }
@@ -170,7 +170,7 @@ function fillLocaleStorage(loginResult) {
 
 export default {
     // getters
-    get,
+    getNfts,
     getOne,
     getMostRecent,
     getMy,
