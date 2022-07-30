@@ -1,40 +1,49 @@
-require('dotenv').config();
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const cors = require("cors");
 const bodyParser = require('body-parser');
 const fileupload = require("express-fileupload");
 
-const db = require('./config/db');
-const { port, dbConnection } = require('./config/config');
-
 const allowed = ['.js', '.css', '.png', '.jpg', '.jpeg', '.ico'];
+const whitelist = ['http://localhost:*'];
+
+const router = require('./routes');
+const { databaseInitialize } = require('./config/database');
+const { PORT } = require('./config/environment');
+const { authentication } = require('./middlewares/userMiddleware');
+const { errorHandler } = require('./middlewares/errorHandlerMiddleware');
 
 const app = express();
 
 app.use(cors());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(authentication);
+app.use(errorHandler);
 app.use(fileupload());
-app.use(express.static("files"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(router);
 
-const start = async () => {
-  try {
-    await db(dbConnection);
-    require('./config/express')(app, express);
-    require('./routes/router')(app);
+app.use((error, req, res, next) => {
+    if (res.headerSent) {
+        return next(error);
+    }
+    res.status(error.code || 500).json({ message: error.message || 'An unknown error occurred!' });
+});
 
-    app.get('*', (req, res) => {
-      if (allowed.filter((ext) => req.url.indexOf(ext) > 0).length > 0) {
-        res.sendFile(path.resolve(`public/${req.url}`));
-      } else {
-        res.sendFile(path.join(__dirname, 'public/index.html'));
-      }
+app.get('*', function (req, res) {
+    res.json({ error: '404' });
+});
+
+databaseInitialize()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server listening on port: ${PORT}...`)
+        });
+    })
+    .catch((e) => {
+        console.log(e);
     });
-    console.log('*** >>> Database is connected <<< ***');
-    app.listen(port, () => console.log(`Server is listening on port: ${port}`));
-  } catch (error) {
-    console.error('!!! >>> Database is not connected <<< !!!\nError:', error.message);
-  }
-};
-start();

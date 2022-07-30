@@ -1,26 +1,41 @@
 const { v4: uuidv4 } = require('uuid');
+const router = require('express').Router();
 
-const { nftModel } = require('../models/Nft');
-const { errorHandler } = require('../utils/errorHandler');
-const { ValidationError } = require('../utils/createValidationError');
+const Nft = require('../models/Nft');
 
-const getNft = async (req, res) => {
+router.get('/', async (req, res) => {
+  try {
+        const count = await Nft.countDocuments();
+        let nfts = await Nft
+          .find()
+          .lean();
+    
+        res.status(200).json({ nfts, count });
+      } catch (error) {
+        if (error.kind === 'ObjectId') {
+          return res.status(200).json({ nfts: [], count: 0 });
+        }
+        errorHandler(error, res, req);
+      }
+});
+
+router.get('/:nftId', async (req, res) => {
   const { nftId } = req.params;
 
   try {
-    const nft = await nftModel.findById(nftId);
+    const nft = await Nft.findById(nftId);
 
     if (!nft) {
-      throw new ValidationError('There is no such nft with provided id.', 404);
+      res.status(404).json({ error: 'Not foound!' });
     }
 
     res.status(200).json({ nft: nft.toObject() });
-  } catch (error) {
-    errorHandler(error, res, req);
+  } catch (err) {
+    res.status(404).json({ error: err });
   }
-};
+});
 
-const addNft = async (req, res) => {
+router.post('/', async (req, res) => {
   let fileName = '';
 
   if (req.files) {
@@ -38,15 +53,15 @@ const addNft = async (req, res) => {
   const data = { name, description, imageUrl, price, owner};
 
   try {
-    const createdNft = await nftModel.create({ ...data });
+    const createdNft = await Nft.create({ ...data });
     const nft = { ...data};
 
   } catch (error) {
     errorHandler(error, res, req);
   }
-};
+});
 
-const updateNft = async (req, res) => {
+router.put('/:nftId', async (req, res) => {
   const { nftId } = req.params;
   let fileName = '';
   
@@ -68,7 +83,7 @@ const updateNft = async (req, res) => {
   const data = { name, description, imageUrl, price };
 
   try {
-    const nft = await nftModel
+    const nft = await Nft
       .findByIdAndUpdate(nftId, data)
       .select('name description imageUrl price');
 
@@ -76,24 +91,24 @@ const updateNft = async (req, res) => {
   } catch (error) {
     errorHandler(error, res, req);
   }
-};
+});
 
-const deleteNft = async (req, res) => {
+router.delete('/:nftId', async (req, res) => {
   const { nftId } = req.params;
 
   try {
-    await nftModel.findByIdAndDelete(nftId);
+    await Nft.findByIdAndDelete(nftId);
 
     res.status(200).json({ nftId });
   } catch (error) {
     errorHandler(error, res, req);
   }
-};
+});
 
 const getNfts = async (req, res) => {
   try {
-    const count = await nftModel.countDocuments();
-    let nfts = await nftModel
+    const count = await Nft.countDocuments();
+    let nfts = await Nft
       .find()
       .lean();
 
@@ -106,10 +121,4 @@ const getNfts = async (req, res) => {
   }
 };
 
-module.exports = {
-  getNft,
-  addNft,
-  updateNft,
-  deleteNft,
-  getNfts
-};
+module.exports = router;

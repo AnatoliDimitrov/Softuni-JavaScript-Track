@@ -17,6 +17,7 @@ import { MyCollection } from "./components/user/MyCollection";
 import { Create } from "./components/product/create/Create";
 import { Edit } from "./components/product/edit/Edit";
 import { Details } from "./components/product/details/Details";
+import { Delete } from "./components/product/delete/Delete";
 
 function App() {
     return (
@@ -37,6 +38,7 @@ function App() {
                 <Route path="/user/my-collection" element={<MyCollection />} />
                 <Route path="/product/create" element={<Create />} />
                 <Route path="/product/edit/:nftId" element={<Edit />} />
+                <Route path="/product/delete/:nftId" element={<Delete />} />
                 <Route path="/product/details/:nftId" element={<Details />} />
                 <Route path="/product/catalog" element={<Catalog />} />
                 <Route path="/*" element={<Error404 />} />

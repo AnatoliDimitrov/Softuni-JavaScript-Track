@@ -44,12 +44,8 @@ export const Register = () => {
                                         <input type="password" id="newPassword" name="password" />
                                     </div>
                                     <div className="mb-5">
-                                        <label htmlFor="exampleInputPassword1" className="form-label">Re Password</label>
+                                        <label htmlFor="exampleInputPassword1" className="form-label">Repeat Password</label>
                                         <input type="password" id="exampleInputPassword1" name="repeatPassword" />
-                                    </div>
-                                    <div className="mb-5 rn-check-box">
-                                        <input type="checkbox" className="rn-check-box-input" id="exampleCheck1" />
-                                        <label className="rn-check-box-label" htmlFor="exampleCheck1">Allow to all tearms & condition</label>
                                     </div>
                                     <button type="submit" className="btn btn-primary mr--15">Sign Up</button>
                                     <Link to="/authentication/login" className="btn btn-primary-alta">Log In</Link>
