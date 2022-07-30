@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+
+import { AuthContext } from "../services/AuthContext";
 
 export const Header = () => {
+    const { user } = useContext(AuthContext);
+
     return (
         <header className="rn-header haeder-default header--sticky">
             <div className="container">
@@ -12,7 +17,7 @@ export const Header = () => {
                         </div>
                         <div className="mainmenu-wrapper">
                             <nav id="sideNav" className="mainmenu-nav d-none d-xl-block">
-                                
+
                                 <ul className="mainmenu">
                                     <li>
                                         <Link to="/">Home</Link>
@@ -26,19 +31,27 @@ export const Header = () => {
                                     <li>
                                         <Link to="/contact">Contact</Link>
                                     </li>
-                                    {/* TODO: if guest */}
-                                    <li>
-                                        <Link to="/authentication/login">Login</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/authentication/register">Register</Link>
-                                    </li>
-                                    {/* TODO: if user */}
-                                    <li>
-                                        <Link to="/product/create">Create</Link>
-                                    </li>
+                                    {user.email
+                                        ? <>
+                                            <li>
+                                                <Link to="/product/create">Create</Link>
+                                            </li>
+                                            <li>
+                                                <Link to="/user/logout">Logout</Link>
+                                            </li>
+                                        </>
+                                        :
+                                        <>
+                                            <li>
+                                                <Link to="/authentication/login">Login</Link>
+                                            </li>
+                                            <li>
+                                                <Link to="/authentication/register">Register</Link>
+                                            </li>
+                                        </>
+                                    }
                                 </ul>
-                                
+
                             </nav>
                         </div>
                     </div>
@@ -62,27 +75,30 @@ export const Header = () => {
                                 </div>
                             </form>
                         </div>
+                        {user.email
+                            ?
+                            <div className="header_admin" id="header_admin">
+                                <div className="setting-option rn-icon-list user-account">
+                                    <div className="icon-box">
+                                        <Link to={`/user/edit-profile/${user._id}`}><img src="/images/icons/boy-avater.png" alt="Images" /></Link>
+                                        <div className="rn-dropdown">
+                                            <div className="rn-inner-top">
+                                                <h4 className="title"><Link to="product-details.html">Christopher William</Link></h4>
+                                                <span>{user.email}</span>
+                                            </div>
 
-                        <div className="header_admin" id="header_admin">
-                            <div className="setting-option rn-icon-list user-account">
-                                <div className="icon-box">
-                                    <Link to="/user/edit-profile"><img src="/images/icons/boy-avater.png" alt="Images" /></Link>
-                                    <div className="rn-dropdown">
-                                        <div className="rn-inner-top">
-                                            <h4 className="title"><Link to="product-details.html">Christopher William</Link></h4>
-                                            <span>c.william@mail.bg</span>
+                                            <ul className="list-inner">
+                                                <li><Link to={`/user/edit-profile/${user._id}`}>Edit Profile</Link></li>
+                                                <li><Link to="/authentication/logout">Sign Out</Link></li>
+                                                <li><Link to={`/user/my-collection${user._id}`}>My Collection</Link></li>
+                                            </ul>
                                         </div>
-                                        
-                                        <ul className="list-inner">
-                                            <li><Link to="/user/edit-profile">Edit Profile</Link></li>
-                                            {/* TODO: if user */}
-                                            <li><Link to="/authentication/logout">Sign Out</Link></li>
-                                            <li><Link to="/user/my-collection">My Collection</Link></li>
-                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            : ''
+                        }
+
 
 
                         <div className="setting-option mobile-menu-bar d-block d-xl-none">

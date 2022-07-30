@@ -9,11 +9,11 @@ router.get('/register/:userId', isGuest, async (req, res) => {
 });
 
 router.post('/register', isGuest, async (req, res) => {
-    const { username, password, repeatPassword, address } = req.body;
+    const { password, repeatPassword, firstName, lastName, email } = req.body;
     if (password != repeatPassword && password.length >= 3) {
         return res.json({ error: 'Password mismatch or shorter than 3 characters' });
     }
-    const user = await userRegister(username, password, address);
+    const user = await userRegister(password, firstName, lastName, email, '', '', '');
 
     if (user == null) {
         return res.json({ error: 'Non existend user!' });
@@ -29,8 +29,8 @@ router.post('/register', isGuest, async (req, res) => {
         return res.json({ error: token.message });
     }
 
-    res.cookie(constants.COOKIE_NAME, token, { httpOnly: true });
-    res.redirect('/');
+    res.cookie(constants.COOKIE_NAME, token);
+    return res.status(200).send(user);
 });
 
 router.get('/login/:userId', isGuest, async (req, res) => {
@@ -57,11 +57,11 @@ router.post('/login', isGuest, async (req, res) => {
         return res.json({ error: token.message });
     }
 
-    res.cookie(constants.COOKIE_NAME, token, { httpOnly: true });
-    res.json(user);
+    res.cookie(constants.COOKIE_NAME, token);
+    res.status(200).send(user);
 });
 
-router.get('/logout', isAuthenticated, (req, res) => {
+router.get('/logout', (req, res) => {
     res.clearCookie(constants.COOKIE_NAME);
     res.json();
 });

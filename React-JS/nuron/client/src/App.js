@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
+import { AuthContext } from "./services/AuthContext";
+
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { MobileMenu } from "./components/MobileMenu";
@@ -18,9 +20,21 @@ import { Create } from "./components/product/create/Create";
 import { Edit } from "./components/product/edit/Edit";
 import { Details } from "./components/product/details/Details";
 import { Delete } from "./components/product/delete/Delete";
+import { useState } from "react";
+import { Logout } from "./components/auth/Logout";
 
 function App() {
+    const [auth, setAuth] = useState({});
+
+    const userAuth = (data) => {
+        setAuth(data);
+    };
+
+    const userLogout = () => {
+        setAuth({});
+    };
     return (
+        <AuthContext.Provider value={{user: auth, userAuth, userLogout}}>
         <div>
 
             <Header />
@@ -34,8 +48,9 @@ function App() {
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/authentication/login" element={<Login />} />
                 <Route path="/authentication/register" element={<Register />} />
-                <Route path="/user/edit-profile" element={<EditProfile />} />
+                <Route path="/user/edit-profile/:userId" element={<EditProfile />} />
                 <Route path="/user/my-collection" element={<MyCollection />} />
+                <Route path="/user/logout" element={<Logout />} />
                 <Route path="/product/create" element={<Create />} />
                 <Route path="/product/edit/:nftId" element={<Edit />} />
                 <Route path="/product/delete/:nftId" element={<Delete />} />
@@ -46,6 +61,7 @@ function App() {
 
             <Footer />
         </div>
+        </AuthContext.Provider>
   );
 }
 

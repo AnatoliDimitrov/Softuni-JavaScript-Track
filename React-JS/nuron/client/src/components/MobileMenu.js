@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+
+import { AuthContext } from "../services/AuthContext";
 
 export const MobileMenu = () => {
+    const { user } = useContext(AuthContext);
     return (
         <div className="popup-mobile-menu">
             <div className="inner">
@@ -29,16 +33,26 @@ export const MobileMenu = () => {
                         <li>
                             <Link to="/contact">Contact</Link>
                         </li>
-                        <li>
-                            <Link to="/user/myCollection">My Collection</Link>
-                        </li>
-                            {/* TODO: if guest */}
-                        <li>
-                            <Link to="/authentication/login">Login</Link>
-                        </li>
-                        <li>
-                            <Link to="/authentication/register">Register</Link>
-                        </li>
+                        {user.email
+                            ?
+                            <>
+                                <li>
+                                    <Link to="/product/create">Create</Link>
+                                </li>
+                                <li>
+                                    <Link to="/user/logout">Logout</Link>
+                                </li>
+                            </>
+                            :
+                            <>
+                                <li>
+                                    <Link to="/authentication/login">Login</Link>
+                                </li>
+                                <li>
+                                    <Link to="/authentication/register">Register</Link>
+                                </li>
+                            </>
+                        }
                     </ul>
                 </nav>
             </div>

@@ -5,16 +5,20 @@ const jwt = require('jsonwebtoken');
 const constants = require('../constants');
 const { promisify } = require('util');
 
-exports.userRegister = async (username, password, address) => {
+exports.userRegister = async (password, firstName, lastName, email, bio, phoneNumber, imageUrl) => {
     try {
         password = await bcrypt.hash(password, constants.SALT_ROUNDS);
         const user = {
-            username,
             password,
-            address,
+            firstName,
+            lastName,
+            email,
+            bio,
+            phoneNumber,
+            imageUrl,
         };
         await User.create(user);
-        return await User.findOne({ username }).lean();
+        return await User.findOne({ email }).lean();
     } catch (error) {
         return { message: error.message }
     }

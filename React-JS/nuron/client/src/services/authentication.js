@@ -122,7 +122,7 @@ async function login(loginUser) {
 
 async function logout() {
     try {
-        await jsonRequest(constants.LOGOUT, 'Get', undefined, true, true);
+        await jsonRequest(constants.LOGOUT, undefined, undefined, true, true);
     } catch (err) {
         alert(err);
     }
