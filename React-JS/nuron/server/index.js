@@ -18,6 +18,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
+app.use('/public', express.static('static'));
 app.use(cookieParser());
 app.use(authentication);
 app.use(errorHandler);

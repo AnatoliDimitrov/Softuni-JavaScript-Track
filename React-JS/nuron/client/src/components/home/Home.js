@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+
+import { AuthContext } from "../../services/AuthContext";
 
 import auth from '../../services/authentication.js';
 import { HomeNft } from "./HomeNft.js";
 
 export const Home = () => {
+    const { user } = useContext(AuthContext);
     const [nfts, setNfts] = useState([]);
 
     useEffect(() => {
@@ -13,8 +16,6 @@ export const Home = () => {
                 setNfts(result.nfts)
             });
     }, []);
-
-    console.log(nfts);
 
     return (
         <>
@@ -26,10 +27,10 @@ export const Home = () => {
                             <p className="slide-disc">Partner with one of the world’s largest retailers to showcase your brand and
                                 products.</p>
                             <div className="button-group">
-                                {/* TODO: if guest */}
-                                <Link to="/authentication/register" className="btn btn-large btn-primary">Get Started</Link>
-                                {/* TODO: if user */}
-                                <Link to="/product/create" className="btn btn-large btn-primary-alta" >Create</Link>
+                                {user.email
+                                    ?<Link to="/product/create" className="btn btn-large btn-primary-alta" >Create</Link>
+                                    :<Link to="/authentication/register" className="btn btn-large btn-primary">Get Started</Link>
+                                }
                             </div>
                         </div>
                         <div className="col-lg-5 col-md-6 col-sm-12 offset-lg-1">
@@ -56,7 +57,7 @@ export const Home = () => {
                     <div className="row g-5">
 
                         {nfts.length > 0
-                            ? nfts.filter(x => x.owner == 'Anatoli Dimitrov').map(n => <HomeNft key={n._id} nft={n} />)
+                            ? nfts.map(n => <HomeNft key={n._id} nft={n} />)
                             : <h5>There are no NFTs yet...</h5>
                         }
 

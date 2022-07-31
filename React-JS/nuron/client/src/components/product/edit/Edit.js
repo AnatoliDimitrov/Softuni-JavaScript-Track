@@ -10,6 +10,8 @@ export const Edit = ({props}) => {
 
     const { nftId } = useParams();
     const [nft, setNft] = useState({});
+    const [state, setState] = useState(false);
+    const [regError, setRegError] = useState('');
 
     useEffect(() => {
         auth.getOne(nftId)
@@ -27,7 +29,7 @@ export const Edit = ({props}) => {
         imageUrl: nft.imageUrl,
         picture: '',
         pictureName: '',
-        owner: 'Anatoli Dimitrov',
+        owner: nft.owner,
     });
 
     useEffect(() => {
@@ -113,15 +115,33 @@ export const Edit = ({props}) => {
 
         const url = `${constants.NFTS}/${nftId}`;
 
-        console.log(url);
-
         try {
             const res = axios.put(
                 url,
                 formData
-            ).then(navigate('/user/my-collection'));
+            ).then(res => {
+                if (res.data.error) {
+                    const pattern = /(Path `)(.*?)(`)/g;
+                    const errors = res.data.error.replace(pattern, '');
+                    setRegError(errors);
+                    setErrors(state => ({
+                        ...state,
+                        createError: true,
+                        first: false,
+                    }));
+
+                    setState(false);
+                    return;
+                } else {
+                    navigate('/user/my-collection');
+                }
+            });
         } catch (ex) {
-            console.log(ex);
+            setErrors(state => ({
+                ...state,
+                serverError: true,
+                first: false,
+            }));
         }
     }
 

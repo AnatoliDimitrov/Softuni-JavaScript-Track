@@ -8,6 +8,7 @@ const nftSchema = new mongoose.Schema({
     },
     imageUrl: {
         type: String,
+        required: true,
     },
     description: {
         type: String,
@@ -24,9 +25,12 @@ const nftSchema = new mongoose.Schema({
         required: true,
     },
     likers: [{
-        type: mongoose.Types.ObjectId,
-        ref: 'User'
-    }]
+        type: String,
+    }],
+    buyers: [{
+        type: String,
+    }],
+    
 });
 
 const Nft = mongoose.model('Nft', nftSchema);

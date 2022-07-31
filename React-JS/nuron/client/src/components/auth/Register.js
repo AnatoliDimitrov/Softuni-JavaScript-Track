@@ -1,15 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 
 import axios from 'axios';
 
 import { AuthContext } from "../../services/AuthContext";
 import constants from '../../services/constants';
 
+import styles from './register.module.css';
+
 export const Register = () => {
 
-    const {userAuth} = useContext(AuthContext);
+    const { userAuth } = useContext(AuthContext);
+    const [state, setState] = useState(false);
+    const [regError, setRegError] = useState('');
 
     const [values, setValues] = useState({
         firstName: '',
@@ -18,7 +21,7 @@ export const Register = () => {
         password: '',
         repeatPassword: '',
     });
-    
+
     const navigate = useNavigate();
     const [errors, setErrors] = useState({ first: true });
 
@@ -61,9 +64,26 @@ export const Register = () => {
         }
     };
 
+    const checkEmail = (e) => {
+        const pattern = /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+        if (!pattern.test(values.email)) {
+            setErrors(state => ({
+                ...state,
+                [e.target.name]: true,
+                first: false,
+            }))
+        } else {
+            setErrors(state => ({
+                ...state,
+                [e.target.name]: false,
+                first: false,
+            }))
+        }
+    };
+
     const onSubmitHandler = async (e) => {
         e.preventDefault();
-
+        setState(true);
         const formData = new FormData();
         formData.append("firstName", values.firstName);
         formData.append("lastName", values.lastName);
@@ -73,17 +93,36 @@ export const Register = () => {
 
         try {
             const res = axios.post(
-                constants.USERS,
+                constants.USERS_REGISTER,
                 formData
             );
 
             const result = await res;
-            console.log(result.data);
-            userAuth(result.data);
-            navigate('/');
+            if (result.data.error) {
+                const pattern = /(Path `)(.*?)(`)/g;
+                const errors = result.data.error.replace(pattern, '');
+                setRegError(errors);
+                setErrors(state => ({
+                    ...state,
+                    registerError: true,
+                    first: false,
+                }));
+
+                setState(false);
+                return;
+            } else {
+                userAuth(result.data);
+                navigate('/');
+            }
         } catch (ex) {
-            console.log(ex);
+            setErrors(state => ({
+                ...state,
+                serverError: true,
+                first: false,
+            }));
         }
+
+        setState(false);
     }
 
     let isValidForm = Object.values(errors).some(x => x);
@@ -125,6 +164,11 @@ export const Register = () => {
                                             onBlur={(e) => minLength(e, 2)}
                                             value={values.firstName}
                                         />
+                                        {errors.firstName &&
+                                            <p className={styles.formError}>
+                                                First name should be at least 2 characters long!
+                                            </p>
+                                        }
                                     </div>
                                     <div className="mb-5">
                                         <label htmlFor="lastName" className="form-label">Last name</label>
@@ -137,6 +181,11 @@ export const Register = () => {
                                             onBlur={(e) => minLength(e, 2)}
                                             value={values.lastName}
                                         />
+                                        {errors.lastName &&
+                                            <p className={styles.formError}>
+                                                Last name should be at least 2 characters long!
+                                            </p>
+                                        }
                                     </div>
                                     <div className="mb-5">
                                         <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
@@ -146,9 +195,14 @@ export const Register = () => {
                                             name="email"
                                             placeholder="example@example.com"
                                             onChange={changeHandler}
-                                            onBlur={(e) => minLength(e, 2)}
                                             value={values.email}
+                                            onBlur={checkEmail}
                                         />
+                                        {errors.email &&
+                                            <p className={styles.formError}>
+                                                Email should be valid!
+                                            </p>
+                                        }
                                     </div>
                                     <div className="mb-5">
                                         <label htmlFor="newPassword" className="form-label">Create Password</label>
@@ -160,6 +214,11 @@ export const Register = () => {
                                             onBlur={(e) => minLength(e, 3)}
                                             value={values.password}
                                         />
+                                        {errors.password &&
+                                            <p className={styles.formError}>
+                                                Password should be at least 3 characters long!
+                                            </p>
+                                        }
                                     </div>
                                     <div className="mb-5">
                                         <label htmlFor="exampleInputPassword1" className="form-label">Repeat Password</label>
@@ -171,8 +230,23 @@ export const Register = () => {
                                             onBlur={checkRepeatPassword}
                                             value={values.repeatPassword}
                                         />
+                                        {errors.repeatPassword &&
+                                            <p className={styles.formError}>
+                                                Passwords should match!
+                                            </p>
+                                        }
                                     </div>
-                                    <button type="submit" className="btn btn-primary mr--15">Sign Up</button>
+                                    {errors.registerError &&
+                                        <p className={styles.formError}>
+                                            {regError}
+                                        </p>
+                                    }
+                                    {errors.serverError &&
+                                        <p className={styles.formError}>
+                                            Something went wrong please try again later!
+                                        </p>
+                                    }
+                                    <button type="submit" className="btn btn-primary mr--15" disabled={state}>{state ? 'Loading...' : 'Sign Up'}</button>
                                     <Link to="/authentication/login" className="btn btn-primary-alta">Log In</Link>
                                 </form>
                             </div>

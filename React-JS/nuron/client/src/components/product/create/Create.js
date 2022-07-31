@@ -1,11 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from 'axios';
+import { useContext } from "react";
 
+import { AuthContext } from "../../../services/AuthContext";
 import styles from './create.module.css';
 import constants from '../../../services/constants.js';
 
 export const Create = () => {
+    const { user } = useContext(AuthContext);
     const [values, setValues] = useState({
         name: '',
         description: '',
@@ -13,12 +16,14 @@ export const Create = () => {
         imageUrl: '',
         picture: '',
         pictureName: '',
-        owner: 'Anatoli Dimitrov',
+        owner: user._id,
     });
     const [file, setFile] = useState();
     const [fileName, setFileName] = useState("");
     const navigate = useNavigate();
     const [errors, setErrors] = useState({ first: true });
+    const [state, setState] = useState(false);
+    const [regError, setRegError] = useState('');
 
     const changeHandler = (e) => {
         setValues(state => ({
@@ -76,6 +81,7 @@ export const Create = () => {
     const onSubmitHandler = async (e) => {
         e.preventDefault();
 
+        setState(true);
         const formData = new FormData();
         formData.append("file", file);
         formData.append("fileName", fileName);
@@ -85,15 +91,37 @@ export const Create = () => {
         formData.append("price", values.price);
         formData.append("owner", values.owner);
 
-
         try {
-            const res = axios.post(
+            axios.post(
                 constants.NFTS,
                 formData
-            ).then(navigate('/user/my-collection'));
+            )
+                .then(res => {
+                    if (res.data.error) {
+                        const pattern = /(Path `)(.*?)(`)/g;
+                        const errors = res.data.error.replace(pattern, '');
+                        setRegError(errors);
+                        setErrors(state => ({
+                            ...state,
+                            createError: true,
+                            first: false,
+                        }));
+
+                        setState(false);
+                        return;
+                    } else {
+                        navigate('/user/my-collection');
+                    }
+                })
         } catch (ex) {
-            console.log(ex);
+            setErrors(state => ({
+                ...state,
+                serverError: true,
+                first: false,
+            }));
         }
+
+        setState(false);
     }
 
     let isValidForm = Object.values(errors).some(x => x);
@@ -193,7 +221,8 @@ export const Create = () => {
                                                 rows="3"
                                                 name="description"
                                                 placeholder="e. g. “After purchasing the product you can get item...”"
-                                                onChange={changeHandler} value={values.description}
+                                                onChange={changeHandler}
+                                                value={values.description}
                                                 onBlur={(e) => minLength(e, 10)}
                                             >
                                             </textarea>
@@ -226,20 +255,30 @@ export const Create = () => {
                                     </div>
 
                                     <input type="hidden" name="imageUrl" onChange={changeHandler} value={values.imageUrl} />
+                                    {errors.createError &&
+                                        <p className={styles.formError}>
+                                            {regError}
+                                        </p>
+                                    }
+                                    {errors.serverError &&
+                                        <p className={styles.formError}>
+                                            Something went wrong please try again later!
+                                        </p>
+                                    }
 
                                     <div className="col-md-12">
                                         <div className="input-box">
                                             <button
                                                 type="submit"
                                                 className="btn btn-primary btn-large w-100"
-                                                disabled={isValidForm}
-                                            >
-                                                Submit Item
+                                                disabled={isValidForm && state}
+
+                                            >{state ? 'Loading...' :
+                                                'Submit Item'}
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
 
                             <div className="mt--100 mt_sm--30 mt_md--30 d-block d-lg-none">

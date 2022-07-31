@@ -36,9 +36,6 @@ export const Header = () => {
                                             <li>
                                                 <Link to="/product/create">Create</Link>
                                             </li>
-                                            <li>
-                                                <Link to="/user/logout">Logout</Link>
-                                            </li>
                                         </>
                                         :
                                         <>
@@ -89,8 +86,8 @@ export const Header = () => {
 
                                             <ul className="list-inner">
                                                 <li><Link to={`/user/edit-profile/${user._id}`}>Edit Profile</Link></li>
-                                                <li><Link to="/authentication/logout">Sign Out</Link></li>
-                                                <li><Link to={`/user/my-collection${user._id}`}>My Collection</Link></li>
+                                                <li><Link to="/user/logout">Sign Out</Link></li>
+                                                <li><Link to={`/user/my-collection`}>My Collection</Link></li>
                                             </ul>
                                         </div>
                                     </div>

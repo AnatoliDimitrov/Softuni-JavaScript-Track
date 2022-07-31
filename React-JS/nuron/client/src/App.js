@@ -20,11 +20,12 @@ import { Create } from "./components/product/create/Create";
 import { Edit } from "./components/product/edit/Edit";
 import { Details } from "./components/product/details/Details";
 import { Delete } from "./components/product/delete/Delete";
-import { useState } from "react";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 import { Logout } from "./components/auth/Logout";
+import { Suspense } from "react";
 
 function App() {
-    const [auth, setAuth] = useState({});
+    const [auth, setAuth] = useLocalStorage('nuronUser', {});
 
     const userAuth = (data) => {
         setAuth(data);
@@ -34,35 +35,35 @@ function App() {
         setAuth({});
     };
     return (
-        <AuthContext.Provider value={{user: auth, userAuth, userLogout}}>
-        <div>
+        <AuthContext.Provider value={{ user: auth, userAuth, userLogout }}>
+            <div>
 
-            <Header />
-            <MobileMenu />
+                <Header />
+                <MobileMenu />
 
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/authentication/login" element={<Login />} />
-                <Route path="/authentication/register" element={<Register />} />
-                <Route path="/user/edit-profile/:userId" element={<EditProfile />} />
-                <Route path="/user/my-collection" element={<MyCollection />} />
-                <Route path="/user/logout" element={<Logout />} />
-                <Route path="/product/create" element={<Create />} />
-                <Route path="/product/edit/:nftId" element={<Edit />} />
-                <Route path="/product/delete/:nftId" element={<Delete />} />
-                <Route path="/product/details/:nftId" element={<Details />} />
-                <Route path="/product/catalog" element={<Catalog />} />
-                <Route path="/*" element={<Error404 />} />
-            </Routes>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/authentication/login" element={<Login />} />
+                    <Route path="/authentication/register" element={<Register />} />
+                    <Route path="/user/edit-profile/:userId" element={<EditProfile />} />
+                    <Route path="/user/my-collection" element={<MyCollection />} />
+                    <Route path="/user/logout" element={<Logout />} />
+                    <Route path="/product/create" element={<Create />} />
+                    <Route path="/product/edit/:nftId" element={<Edit />} />
+                    <Route path="/product/delete/:nftId" element={<Delete />} />
+                    <Route path="/product/details/:nftId" element={<Details />} />
+                    <Route path="/product/catalog" element={<Catalog />} />
+                    <Route path="/*" element={<Error404 />} />
+                </Routes>
 
-            <Footer />
-        </div>
+                <Footer />
+            </div>
         </AuthContext.Provider>
-  );
+    );
 }
 
 export default App;

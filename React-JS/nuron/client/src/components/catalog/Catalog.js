@@ -38,7 +38,7 @@ export const Catalog = () => {
                     <div className="row g-5">
 
                         {nfts.length > 0
-                            ? nfts.filter(x => x.owner == 'Anatoli Dimitrov').map(n => <CatalogNft key={n._id} nft={n} />)
+                            ? nfts.map(n => <CatalogNft key={n._id} nft={n} />)
                             : <h5>There are no NFTs yet...</h5>
                         }
 

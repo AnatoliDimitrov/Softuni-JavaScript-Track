@@ -37,6 +37,9 @@ export const MobileMenu = () => {
                             ?
                             <>
                                 <li>
+                                    <Link to={`/user/my-collection`}>My Collection</Link>
+                                </li>
+                                <li>
                                     <Link to="/product/create">Create</Link>
                                 </li>
                                 <li>

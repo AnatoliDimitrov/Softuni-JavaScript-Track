@@ -1,18 +1,21 @@
 import { Link, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+
+import { AuthContext } from "../../../services/AuthContext";
 
 import auth from '../../../services/authentication.js';
 
 export const Details = () => {
-    
+    const { user } = useContext(AuthContext);
+
     const { nftId } = useParams();
-    const [nft, setNft] = useState({likers: []});
-    
+    const [nft, setNft] = useState({ likers: [] });
+
     useEffect(() => {
         const prom = auth.getOne(nftId)
-        .then( result => {
-            setNft( result.nft )
-        });
+            .then(result => {
+                setNft(result.nft)
+            });
     }, []);
     return (
         <>
@@ -86,12 +89,25 @@ export const Details = () => {
                                 <div className="rn-bid-details">
                                     <div className="tab-wrapper-one">
                                         <nav className="tab-button-one">
-                                            <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                                                <Link to={`/product/edit/${nft._id}`}><button className="nav-link active" id="nav-home-tab" type="button" role="tab" aria-controls="nav-home">Edit</button></Link>
-                                                <Link to={`/product/delete/${nft._id}`}><button className="nav-link" id="nav-profile-tab" type="button" role="tab" aria-controls="nav-profile">Delete</button></Link>
-                                                <Link to={`/product/buy/${nft._id}`}><button className="nav-link active" id="nav-contact-tab" type="button" role="tab" aria-controls="nav-contact">Buy</button></Link>
-                                                <Link to={`/product/Like/${nft._id}`}><button className="nav-link" id="nav-like-tab" type="button" role="tab" aria-controls="nav-like">Like</button></Link>
+                                            {user.email
+                                                ?
+                                                <div className="nav nav-tabs" id="nav-tab" role="tablist">
+                                                {user._id == nft.owner
+                                                    ?
+                                                    <>
+                                                        <Link to={`/product/edit/${nft._id}`}><button className="nav-link active" id="nav-home-tab" type="button" role="tab" aria-controls="nav-home">Edit</button></Link>
+                                                        <Link to={`/product/delete/${nft._id}`}><button className="nav-link" id="nav-profile-tab" type="button" role="tab" aria-controls="nav-profile">Delete</button></Link>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <Link to={`/product/buy/${nft._id}`}><button className="nav-link active" id="nav-contact-tab" type="button" role="tab" aria-controls="nav-contact">Buy</button></Link>
+                                                        <Link to={`/product/Like/${nft._id}`}><button className="nav-link" id="nav-like-tab" type="button" role="tab" aria-controls="nav-like">Like</button></Link>
+                                                    </>
+                                                }
                                             </div>
+                                                : ''
+                                            }
+                                            
                                         </nav>
                                         <div className="tab-content rn-bid-content" id="nav-tabContent">
                                             <div className="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">

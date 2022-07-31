@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+
+import { AuthContext } from "../../services/AuthContext";
 
 import auth from '../../services/authentication.js';
 
@@ -14,6 +16,9 @@ export const MyCollection = () => {
             setNfts( result.nfts )
         });
     }, []);
+    const { user } = useContext(AuthContext);
+
+    const myNfts = nfts.filter(x => x.owner == user._id).map(n => <OwnNft key={n._id} nft={n}/>);
 
     return (
         <>
@@ -37,9 +42,15 @@ export const MyCollection = () => {
             <div className="rn-collection-area rn-section-gapTop">
                 <div className="container">
                     <div className="row g-5">
-                        {nfts.length > 0
-                            ? nfts.filter(x => x.owner == 'Anatoli Dimitrov').map(n => <OwnNft key={n._id} nft={n}/>)
-                            : <h5>There are no NFTs yet...</h5>
+                        {myNfts.length > 0
+                            ? myNfts
+                            :
+                            <> 
+                            <h5>You have no NFTs yet...   </h5>
+                            <div className="button-group">
+                                <Link to="/product/create" className="btn btn-large btn-primary-alta" >Create</Link>
+                            </div>
+                            </>
                         }
                     </div>
                 </div>
