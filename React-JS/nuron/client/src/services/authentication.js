@@ -40,6 +40,16 @@ async function getOne(id) {
     }
 }
 
+async function getOneUser(id) {
+    try {
+        let result = await jsonRequest(`${constants.USERS}/${id}`, 'get');
+        return result;
+    } catch (err) {
+        alert(err);
+    }
+}
+
+
 async function getLikesCount(bookId) {
     try {
         let result = await jsonRequest(`${constants.LIKES}${`?where=bookId%3D%22${bookId}%22&distinct=_ownerId&count`}`);
@@ -57,9 +67,18 @@ async function getSpecificLike(bookId, userId) {
     }
 }
 
-async function like(body) {
+async function like(nftId, body) {
     try {
-        await jsonRequest(`${constants.LIKES}`, 'post', body, true);
+        console.log(body);
+        await jsonRequest(`${constants.NFTS}/like/${nftId}`, 'put', body, true);
+    } catch (err) {
+        alert(err);
+    }
+}
+
+async function dislike(nftId, body) {
+    try {
+        await jsonRequest(`${constants.NFTS}/like/${nftId}`, 'put', body, true);
     } catch (err) {
         alert(err);
     }
@@ -111,6 +130,14 @@ async function put(id, body) {
 async function del(id) {
     try {
         await jsonRequest(`${constants.NFTS}/${id}`, 'delete', undefined, true);
+    } catch (err) {
+        alert(err);
+    }
+}
+
+async function deleteUser(id) {
+    try {
+        await jsonRequest(`${constants.USERS}/${id}`, 'delete', undefined, true);
     } catch (err) {
         alert(err);
     }
@@ -172,11 +199,13 @@ export default {
     // getters
     getNfts,
     getOne,
+    getOneUser,
     getMostRecent,
     getMy,
     getLikesCount,
     getSpecificLike,
     like,
+    dislike,
 
     // authentication
     login,
@@ -185,6 +214,7 @@ export default {
     
     // delete
     del,
+    deleteUser,
 
     //post
     post,

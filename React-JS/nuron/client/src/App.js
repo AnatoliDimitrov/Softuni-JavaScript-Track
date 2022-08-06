@@ -12,7 +12,7 @@ import { Terms } from "./components/terms-and-privacy/Terms";
 import { Privacy } from "./components/terms-and-privacy/Privacy";
 import { Login } from "./components/auth/Login";
 import { Register } from "./components/auth/Register";
-import { EditProfile } from "./components/user/EditProfile";
+import { EditProfile } from "./components/user/editProfile/EditProfile";
 import { Error404 } from "./components/home/Error404";
 import { Catalog } from "./components/catalog/Catalog";
 import { MyCollection } from "./components/user/MyCollection";
@@ -23,6 +23,7 @@ import { Delete } from "./components/product/delete/Delete";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { Logout } from "./components/auth/Logout";
 import { Suspense } from "react";
+import { DeleteUser } from "./components/user/DeleteUser";
 
 function App() {
     const [auth, setAuth] = useLocalStorage('nuronUser', {});
@@ -49,9 +50,10 @@ function App() {
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="/authentication/login" element={<Login />} />
                     <Route path="/authentication/register" element={<Register />} />
-                    <Route path="/user/edit-profile/:userId" element={<EditProfile />} />
+                    <Route path="/user/edit-profile" element={<EditProfile />} />
                     <Route path="/user/my-collection" element={<MyCollection />} />
                     <Route path="/user/logout" element={<Logout />} />
+                    <Route path="/user/delete-user" element={<DeleteUser />} />
                     <Route path="/product/create" element={<Create />} />
                     <Route path="/product/edit/:nftId" element={<Edit />} />
                     <Route path="/product/delete/:nftId" element={<Delete />} />

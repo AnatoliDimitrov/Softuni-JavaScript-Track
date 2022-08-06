@@ -36,35 +36,17 @@ export const Footer = () => {
                     <div className="footer-widget widget-quicklink">
                         <h6 className="widget-title">Nuron</h6>
                         <ul className="footer-list-one">
-                            <li className="single-list"><Link to="#">Protocol Explore</Link></li>
-                            <li className="single-list"><Link to="#">System Token</Link></li>
-                            <li className="single-list"><Link to="#">Otimize Time</Link></li>
-                            <li className="single-list"><Link to="#">Visual Checking</Link></li>
-                            <li className="single-list"><Link to="#">Fadeup System</Link></li>
-                            <li className="single-list"><Link to="#">Activity Log</Link></li>
-                            <li className="single-list"><Link to="#">System Auto Since</Link></li>
+                            <li className="single-list"><Link to="#">Home</Link></li>
+                            <li className="single-list"><Link to="#">Catalog</Link></li>
+                            <li className="single-list"><Link to="#">About</Link></li>
+                            <li className="single-list"><Link to="#">Contact</Link></li>
                         </ul>
                     </div>
                 </div>
 
-                <div className="col-lg-3 col-md-6 col-sm-6 col-12 mt_md--40 mt_sm--40">
-                    <div className="footer-widget widget-information">
-                        <h6 className="widget-title">Information</h6>
-                        <ul className="footer-list-one">
-                            <li className="single-list"><Link to="#">Market Explore</Link></li>
-                            <li className="single-list"><Link to="#">Ready Token</Link></li>
-                            <li className="single-list"><Link to="#">Main Option</Link></li>
-                            <li className="single-list"><Link to="#">Product Checking</Link></li>
-                            <li className="single-list"><Link to="blog.html">Blog Grid</Link></li>
-                            <li className="single-list"><Link to="about.html">About Us</Link></li>
-                            <li className="single-list"><Link to="#">Fix Bug </Link></li>
-                        </ul>
-                    </div>
-                </div>
 
                 <div className="col-lg-3 col-md-6 col-sm-6 col-12 mt_md--40 mt_sm--40">
                     <div className="footer-widget">
-                        
                     </div>
                 </div>
             </div>

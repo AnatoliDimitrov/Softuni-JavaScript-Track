@@ -1,12 +1,16 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from 'axios';
+import { useContext } from "react";
+
+import { AuthContext } from "../../../services/AuthContext";
 
 import styles from './edit.module.css';
 import constants from '../../../services/constants.js';
 import auth from '../../../services/authentication.js';
 
-export const Edit = ({props}) => {
+export const Edit = () => {
+    const { user } = useContext(AuthContext);
 
     const { nftId } = useParams();
     const [nft, setNft] = useState({});
@@ -40,12 +44,12 @@ export const Edit = ({props}) => {
             imageUrl: nft.imageUrl,
             picture: '',
             pictureName: '',
-            owner: 'Anatoli Dimitrov',
+            owner: user._id,
         });
     }, [nft]);
 
     console.log(values);
-    
+
 
     const [file, setFile] = useState();
     const [fileName, setFileName] = useState("");
@@ -105,7 +109,7 @@ export const Edit = ({props}) => {
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append("file", file );
+        formData.append("file", file);
         formData.append("fileName", fileName);
         formData.append("name", values.name);
         formData.append("imageUrl", values.imageUrl || nft.imageUrl);
@@ -146,7 +150,7 @@ export const Edit = ({props}) => {
     }
 
     let isValidForm = Object.values(errors).some(x => x);
-    
+
     return (
         <>
             <div className="rn-breadcrumb-inner ptb--30">
@@ -193,14 +197,15 @@ export const Edit = ({props}) => {
                                             className="inputfile"
                                             onChange={saveFile}
                                         />
-                                        <img 
-                                            id="createfileImage" src={values.imageUrl
+                                        <img
+                                            id="createfileImage" 
+                                            src={values.imageUrl
                                                 ? values.imageUrl
-                                                :"/images/portfolio/portfolio-05.jpg"
-                                            } 
-                                            alt="" 
-                                            data-black-overlay="6" 
-                                            />
+                                                : "/images/portfolio/portfolio-05.jpg"
+                                            }
+                                            alt=""
+                                            data-black-overlay="6"
+                                        />
 
                                         <label htmlFor="createinputfile" title="No File Choosen">
                                             <i className="feather-upload"></i>
@@ -246,7 +251,7 @@ export const Edit = ({props}) => {
                                                 id="Discription"
                                                 rows="3"
                                                 name="description"
-                                                onChange={changeHandler} 
+                                                onChange={changeHandler}
                                                 value={values.description}
                                                 onBlur={(e) => minLength(e, 10)}
                                             >

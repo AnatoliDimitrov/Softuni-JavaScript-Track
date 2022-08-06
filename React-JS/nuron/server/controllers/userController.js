@@ -1,12 +1,27 @@
 const router = require('express').Router();
+const { v4: uuidv4 } = require('uuid');
+
 const { userRegister, userLogin, createToken, getOne } = require('../services/userService');
 const constants = require('../constants');
+const User = require('../models/User');
 const { isGuest, isAuthenticated } = require('../middlewares/userMiddleware');
 
-router.get('/register/:userId', isGuest, async (req, res) => {
+router.get('/:userId', async (req, res) => {
     const user = await getOne(req.params.userId);
     res.json(user);
 });
+
+router.delete('/:userId', async (req, res) => {
+    const { userId } = req.params;
+    try {
+        await User.findByIdAndDelete(userId);
+
+        res.status(200).json({ userId });
+    } catch (err) {
+        return res.json({ error: err.message });
+    }
+});
+
 
 router.post('/register', isGuest, async (req, res) => {
     const { password, repeatPassword, firstName, lastName, email } = req.body;
@@ -64,6 +79,52 @@ router.post('/login', isGuest, async (req, res) => {
 router.get('/logout', (req, res) => {
     res.clearCookie(constants.COOKIE_NAME);
     res.json();
+});
+
+router.put('/edit/:userId', async (req, res) => {
+    const { userId } = req.params;
+    let { firstName, lastName, email, bio, phoneNumber } = req.body;
+    const data = { firstName, lastName, email, bio, phoneNumber };
+
+    try {
+        const user = await User
+            .findByIdAndUpdate(userId, data)
+
+        res.status(200).json({ user: user.toObject() });
+    } catch (err) {
+        return res.json({ error: err.message });
+    }
+});
+
+router.put('/edit-picture/:userId', async (req, res) => {
+    const { userId } = req.params;
+    let fileName = '';
+
+
+    let { imageUrl } = req.body;
+
+    if (req.files) {
+        const file = req.files.file;
+        fileName = uuidv4();
+
+        console.log(file)
+        console.log(req.body)
+
+        imageUrl = `${'http://localhost:3005/public/users/'}${fileName}`;
+
+        file.mv(`${'./static/users'}/${fileName}`);
+    }
+
+    const data = { imageUrl};
+
+    try {
+        const user = await User
+            .findByIdAndUpdate(userId, data);
+
+        res.status(200).json({ user: user.toObject() });
+    } catch (err) {
+        return res.json({ error: err.message });
+    }
 });
 
 module.exports = router;

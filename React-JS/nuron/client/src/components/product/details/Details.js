@@ -1,12 +1,16 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
+
+import axios from 'axios';
 
 import { AuthContext } from "../../../services/AuthContext";
 
 import auth from '../../../services/authentication.js';
+import constants from '../../../services/constants';
 
 export const Details = () => {
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const { nftId } = useParams();
     const [nft, setNft] = useState({ likers: [] });
@@ -17,6 +21,74 @@ export const Details = () => {
                 setNft(result.nft)
             });
     }, []);
+
+    const onSubmitBuyHandler = async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append("buyer", user._id);
+
+        const owner = user._id;
+
+        const url = `${constants.NFTS}/buy/${nftId}`;
+        setNft(old => ({...nft, owner }))
+
+        try {
+            const res = axios.put(
+                url,
+                formData
+            ).then(res => {
+                navigate('/user/my-collection');
+            });
+        } catch (ex) {
+        }
+    }
+
+    const onSubmitLikeHandler = async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append("liker", user._id);
+
+        let likers = nft.likers;
+        likers.push(user._id);
+
+        const url = `${constants.NFTS}/like/${nftId}`;
+        setNft(old => ({...nft, likers }))
+
+        try {
+            const res = axios.put(
+                url,
+                formData
+            ).then(res => {
+            });
+        } catch (ex) {
+        }
+    }
+
+    const onSubmitDislikeHandler = async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append("desliker", user._id);
+
+        let likers = nft.likers;
+        const index = likers.indexOf(user._id);
+        likers.splice(index, 1);
+
+        const url = `${constants.NFTS}/dislike/${nftId}`;
+        setNft(old => ({...nft, likers }))
+
+        try {
+            const res = axios.put(
+                url,
+                formData
+            ).then(res => {
+            });
+        } catch (ex) {
+        }
+    }
+
     return (
         <>
             <div className="rn-breadcrumb-inner ptb--30">
@@ -92,22 +164,46 @@ export const Details = () => {
                                             {user.email
                                                 ?
                                                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
-                                                {user._id == nft.owner
-                                                    ?
-                                                    <>
-                                                        <Link to={`/product/edit/${nft._id}`}><button className="nav-link active" id="nav-home-tab" type="button" role="tab" aria-controls="nav-home">Edit</button></Link>
-                                                        <Link to={`/product/delete/${nft._id}`}><button className="nav-link" id="nav-profile-tab" type="button" role="tab" aria-controls="nav-profile">Delete</button></Link>
-                                                    </>
-                                                    :
-                                                    <>
-                                                        <Link to={`/product/buy/${nft._id}`}><button className="nav-link active" id="nav-contact-tab" type="button" role="tab" aria-controls="nav-contact">Buy</button></Link>
-                                                        <Link to={`/product/Like/${nft._id}`}><button className="nav-link" id="nav-like-tab" type="button" role="tab" aria-controls="nav-like">Like</button></Link>
-                                                    </>
-                                                }
-                                            </div>
+                                                    {user._id == nft.owner
+                                                        ?
+                                                        <>
+                                                            <Link to={`/product/edit/${nft._id}`}><button className="nav-link active" id="nav-home-tab" type="button" role="tab" aria-controls="nav-home">Edit</button></Link>
+                                                            <Link to={`/product/delete/${nft._id}`}><button className="nav-link" id="nav-profile-tab" type="button" role="tab" aria-controls="nav-profile">Delete</button></Link>
+                                                        </>
+                                                        :
+                                                        <>
+                                                            <button
+                                                            onClick={onSubmitBuyHandler}
+                                                                type="button"
+                                                                className="nav-link active"
+                                                            >
+                                                                Buy
+                                                            </button>
+                                                            {!nft.likers.includes(user._id)
+                                                                ?
+                                                                <button
+                                                                onClick={onSubmitLikeHandler}
+                                                                    type="button"
+                                                                    className="nav-link active"
+                                                                >
+                                                                    Like
+                                                                </button>
+                                                                :
+                                                                <button
+                                                                onClick={onSubmitDislikeHandler}
+                                                                    type="button"
+                                                                    className="nav-link"
+                                                                >
+                                                                    Dislike
+                                                                </button>
+                                                            }
+                                                            
+                                                        </>
+                                                    }
+                                                </div>
                                                 : ''
                                             }
-                                            
+
                                         </nav>
                                         <div className="tab-content rn-bid-content" id="nav-tabContent">
                                             <div className="tab-pane fade" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">

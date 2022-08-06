@@ -23,7 +23,7 @@ router.get('/:nftId', async (req, res) => {
     const { nftId } = req.params;
 
     try {
-        const nft = await Nft.findById(nftId);
+        const nft = await Nft.findById(nftId).populate('likers');
 
         if (!nft) {
             res.status(404).json({ error: 'Not foound!' });
@@ -100,6 +100,56 @@ router.put('/:nftId', async (req, res) => {
         const nft = await Nft
             .findByIdAndUpdate(nftId, data)
             .select('name description imageUrl price');
+
+        res.status(200).json({ nft: nft.toObject() });
+    } catch (err) {
+        return res.json({ error: err.message });
+    }
+});
+
+router.put('/like/:nftId', async (req, res) => {
+    const { nftId } = req.params;
+
+    try {
+        const nft = await Nft
+        .findById(nftId).populate('likers');
+
+        nft.likers.push(req.body.liker);
+
+        await nft.save();
+
+        res.status(200).json({ nft: nft.toObject() });
+    } catch (err) {
+        return res.json({ error: err.message });
+    }
+});
+
+router.put('/dislike/:nftId', async (req, res) => {
+    const { nftId } = req.params;
+
+    try {
+        const nft = await Nft
+        .findById(nftId).populate('likers');
+
+        const index = nft.likers.indexOf(req.body.liker);
+        nft.likers.splice(index, 1);
+
+        await nft.save();
+
+        res.status(200).json({ nft: nft.toObject() });
+    } catch (err) {
+        return res.json({ error: err.message });
+    }
+});
+
+router.put('/buy/:nftId', async (req, res) => {
+    const { nftId } = req.params;
+
+    const owner = req.body.buyer;
+
+    try {
+        const nft = await Nft
+        .findByIdAndUpdate(nftId, {owner})
 
         res.status(200).json({ nft: nft.toObject() });
     } catch (err) {

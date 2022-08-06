@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
     bio: {
         type: String,
     },
+    nfts: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Nft'
+    }],
 });
 
 const User = mongoose.model('User', userSchema);

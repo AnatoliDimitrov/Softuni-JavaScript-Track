@@ -55,7 +55,7 @@ export const Header = () => {
                     <div className="header-right">
                         <div className="setting-option d-none d-lg-block">
                             <form className="search-form-wrapper" action="#">
-                                <input type="search" placeholder="Search NFT" aria-label="Search" />
+                                <input type="search" placeholder="Search NFT by Name" aria-label="Search" />
                                 <div className="search-icon">
                                     <button><i className="feather-search"></i></button>
                                 </div>
@@ -77,15 +77,15 @@ export const Header = () => {
                             <div className="header_admin" id="header_admin">
                                 <div className="setting-option rn-icon-list user-account">
                                     <div className="icon-box">
-                                        <Link to={`/user/edit-profile/${user._id}`}><img src="/images/icons/boy-avater.png" alt="Images" /></Link>
+                                        <Link to="/user/edit-profile"><img src={user.imageUrl ? user.imageUrl : "/images/icons/boy-avater.png"} alt="Images" /></Link>
                                         <div className="rn-dropdown">
                                             <div className="rn-inner-top">
-                                                <h4 className="title"><Link to="product-details.html">Christopher William</Link></h4>
+                                                <h4 className="title"><Link to="/user/edit-profile">{`${user.firstName} ${user.lastName}`}</Link></h4>
                                                 <span>{user.email}</span>
                                             </div>
 
                                             <ul className="list-inner">
-                                                <li><Link to={`/user/edit-profile/${user._id}`}>Edit Profile</Link></li>
+                                                <li><Link to="/user/edit-profile">Edit Profile</Link></li>
                                                 <li><Link to="/user/logout">Sign Out</Link></li>
                                                 <li><Link to={`/user/my-collection`}>My Collection</Link></li>
                                             </ul>

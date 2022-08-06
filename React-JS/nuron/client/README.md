@@ -1,70 +1,58 @@
-# Getting Started with Create React App
+# NURON - NFT MarketPlace
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was created by [Anatoli Dimitrov](https://github.com/AnatoliDimitrov).
 
-## Available Scripts
+## Discover Digital Art, Collect and Sell Your Specific NFTs.
 
-In the project directory, you can run:
+Partner with one of the world’s largest retailers to showcase your brand and products.
 
-### `npm start`
+### `You can add NFTs`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+By creating NFT it is directly uploaded in NURON Marketplace.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+People can see details of your NFT, buy it or like it.
 
-### `npm test`
+**Note: You have to be registered user and logged in**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `You can buy NFT`
 
-### `npm run build`
+If you want to have some product you can buy it any time.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Note: You have to be registered user and logged in**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `You can like NFT`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+If like some product you can like it any time.
 
-### `npm run eject`
+**Note: If you made a mistake you can dislie it, but only after you like it.**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### `You can edit NFT`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Editing NFT is very easy, can be done any time you want.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**Note: You can edit only NFTs that are your own**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### `You can delete NFT`
 
-## Learn More
+Deleting NFT is very easy, can be done any time you want.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Note: You can delete only NFTs that are your own**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### `You can delete NFT`
 
-### Code Splitting
+Deleting NFT is very easy, can be done any time you want.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Note: You can delete only NFTs that are your own**
 
-### Analyzing the Bundle Size
+### `You can edit your user`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+You can edit your user anytime you want.
 
-### Making a Progressive Web App
+**Note: You have to be logged in!**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### `You can delete your user`
 
-### Advanced Configuration
+You can delete your user anytime you want.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+**Note: Deleting your profile cannot be undone!**
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
