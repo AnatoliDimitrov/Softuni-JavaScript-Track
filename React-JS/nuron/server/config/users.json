@@ -1,0 +1,30 @@
+[
+    {
+        "_id": {
+          "$oid": "62ee45bb34e1a7f9531a64b6"
+        },
+        "firstName": "Anatoli",
+        "lastName": "Dimitrov",
+        "email": "apdimitrov@yahoo.com",
+        "imageUrl": "http://localhost:3005/public/users/8a3f3f40-d43f-4686-8028-3c41a0f17b58",
+        "password": "$2b$10$NLWUsPMXo3tfPvx7/Neqrut9H69NnzcsPX6IXZMB0SmUfg4WprR4.",
+        "phoneNumber": "0898344409",
+        "bio": "React dev for at this moment",
+        "nfts": [],
+        "__v": 0
+      },
+      {
+        "_id": {
+          "$oid": "62ef893635d2006f35385589"
+        },
+        "firstName": "Test",
+        "lastName": "Testoff",
+        "email": "test@test.bg",
+        "imageUrl": "http://localhost:3005/public/users/0f2b02bd-64f0-4545-8bf1-d13afbdac765",
+        "password": "$2b$10$ZlerqC461HP6VBBQTNQbR.77EaDNLvw.pRSWzPN3n1H7.swq.ozAe",
+        "phoneNumber": "0888888888",
+        "bio": "Just a user for testing. Nothing else.",
+        "nfts": [],
+        "__v": 0
+      }
+]

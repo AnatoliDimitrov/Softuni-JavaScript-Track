@@ -5,7 +5,7 @@ import { jsonRequest } from "./http.js";
 
 function getNfts(parameter) {
     try {
-        let result = jsonRequest(`${constants.NFTS}?search=${parameter}`);
+        let result = jsonRequest(`${constants.NFTS}`);
         return result;
     } catch (err) {
         return err;

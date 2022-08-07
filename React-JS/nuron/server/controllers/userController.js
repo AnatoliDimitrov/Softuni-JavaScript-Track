@@ -54,9 +54,12 @@ router.get('/login/:userId', isGuest, async (req, res) => {
 });
 
 router.post('/login', isGuest, async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
+    console.log(email);
+    console.log(password);
 
-    const user = await userLogin(username, password);
+    const user = await userLogin(email, password);
+    console.log(user);
 
     if (user == null) {
         return res.json({ error: 'Non existend user!' });

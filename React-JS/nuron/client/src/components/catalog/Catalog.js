@@ -12,9 +12,13 @@ export const Catalog = ({props}) => {
     let parameter = searchparams.get('searchWord')
 
     useEffect(() => {
-        const prom = auth.getNfts(parameter)
+        const prom = auth.getNfts()
             .then(result => {
-                setNfts(result.nfts)
+                let all = result.nfts;
+                if (parameter) {
+                    all = all.filter(h => h.name.toLowerCase().includes(parameter.toLowerCase()));
+                }
+                setNfts(all)
             })
             .catch(err => {
                 setError('No connection to the server please try again later!')
@@ -47,7 +51,9 @@ export const Catalog = ({props}) => {
                         ? <h5>{error}</h5>
                         :nfts.length > 0
                             ? nfts.map(n => <CatalogNft key={n._id} nft={n} />)
-                            : <h5>There are no NFTs yet...</h5>
+                            : parameter
+                                ? <h5>No Matches.</h5>
+                                : <h5>There are no NFTs yet...</h5>
                     }
                     </div>
                 </div>

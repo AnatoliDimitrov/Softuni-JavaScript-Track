@@ -24,12 +24,16 @@ exports.userRegister = async (password, firstName, lastName, email, bio, phoneNu
     }
 }
 
-exports.userLogin = async (username, password) => {
+exports.userLogin = async (email, password) => {
     try {
-        const user = await User.findOne({ username }).lean();
+        if (!email) {
+            throw new Error('email is required'); 
+        }
+        const user = await User.findOne({ email }).lean();
         if (!user) {
             return { message: 'Invalid Login' };
         }
+        
         const isValidPass = await bcrypt.compare(password, user.password);
         if (isValidPass) {
             return user;

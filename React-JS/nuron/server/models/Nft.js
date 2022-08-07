@@ -30,7 +30,7 @@ const nftSchema = new mongoose.Schema({
     buyers: [{
         type: String,
     }],
-    
+
 });
 
 const Nft = mongoose.model('Nft', nftSchema);

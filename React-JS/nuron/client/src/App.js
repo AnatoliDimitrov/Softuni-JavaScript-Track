@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 
 import { AuthContext } from "./services/AuthContext";
+import RouteGuard from "./components/common/RouteGuard";
+import OwnerRouteGuard from "./components/common/OwnerRouteGuard";
 
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
@@ -22,8 +24,8 @@ import { Details } from "./components/product/details/Details";
 import { Delete } from "./components/product/delete/Delete";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { Logout } from "./components/auth/Logout";
-import { Suspense } from "react";
 import { DeleteUser } from "./components/user/DeleteUser";
+import GuestRouteGuard from "./components/common/GuestRouteGuard";
 
 function App() {
     const [auth, setAuth] = useLocalStorage('nuronUser', {});
@@ -48,15 +50,25 @@ function App() {
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/terms" element={<Terms />} />
                     <Route path="/privacy" element={<Privacy />} />
-                    <Route path="/authentication/login" element={<Login />} />
-                    <Route path="/authentication/register" element={<Register />} />
-                    <Route path="/user/edit-profile" element={<EditProfile />} />
-                    <Route path="/user/my-collection" element={<MyCollection />} />
-                    <Route path="/user/logout" element={<Logout />} />
-                    <Route path="/user/delete-user" element={<DeleteUser />} />
-                    <Route path="/product/create" element={<Create />} />
-                    <Route path="/product/edit/:nftId" element={<Edit />} />
-                    <Route path="/product/delete/:nftId" element={<Delete />} />
+
+                    <Route element={<GuestRouteGuard />}>
+                        <Route path="/authentication/login" element={<Login />} />
+                        <Route path="/authentication/register" element={<Register />} />
+                    </Route>
+
+                    <Route element={<RouteGuard />}>
+                        <Route path="/user/edit-profile" element={<EditProfile />} />
+                        <Route path="/user/my-collection" element={<MyCollection />} />
+                        <Route path="/user/logout" element={<Logout />} />
+                        <Route path="/user/delete-user" element={<DeleteUser />} />
+                        <Route path="/product/create" element={<Create />} />
+                    </Route>
+
+                    <Route element={<OwnerRouteGuard />}>
+                        <Route path="/product/edit/:nftId" element={<Edit />} />
+                        <Route path="/product/delete/:nftId" element={<Delete />} />
+                    </Route>
+                    
                     <Route path="/product/details/:nftId" element={<Details />} />
                     <Route path="/product/catalog" element={<Catalog />} />
                     <Route path="/*" element={<Error404 />} />

@@ -7,9 +7,6 @@ router.get('/', async (req, res) => {
     try {
         const count = await Nft.countDocuments();
 
-        let searchWord = req.query.search;
-        console.log(searchWord);
-
         let nfts = await Nft
             .find()
             .lean();
