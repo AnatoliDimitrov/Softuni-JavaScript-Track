@@ -9,11 +9,14 @@ import { OwnNft } from "./OwnNft.js";
 
 export const MyCollection = () => {
     const [nfts, setNfts] = useState([]);
+    const [error, setError] = useState('');
     
     useEffect(() => {
         const prom = auth.getNfts()
         .then( result => {
             setNfts( result.nfts )
+        }).catch(err => {
+            setError('No connection to the server please try again later!')
         });
     }, []);
     const { user } = useContext(AuthContext);
@@ -42,15 +45,17 @@ export const MyCollection = () => {
             <div className="rn-collection-area rn-section-gapTop">
                 <div className="container">
                     <div className="row g-5">
-                        {myNfts.length > 0
-                            ? myNfts
-                            :
-                            <> 
-                            <h5>You have no NFTs yet...   </h5>
-                            <div className="button-group">
-                                <Link to="/product/create" className="btn btn-large btn-primary-alta" >Create</Link>
-                            </div>
-                            </>
+                        {error
+                            ? <h5>{error}</h5>
+                            :myNfts.length > 0
+                                ? myNfts
+                                :
+                                <> 
+                                <h5>You have no NFTs yet...   </h5>
+                                <div className="button-group">
+                                    <Link to="/product/create" className="btn btn-large btn-primary-alta" >Create</Link>
+                                </div>
+                                </>
                         }
                     </div>
                 </div>

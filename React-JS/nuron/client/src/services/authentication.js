@@ -3,12 +3,12 @@ import { jsonRequest } from "./http.js";
 
 
 
-function getNfts() {
+function getNfts(parameter) {
     try {
-        let result = jsonRequest(constants.NFTS);
+        let result = jsonRequest(`${constants.NFTS}?search=${parameter}`);
         return result;
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
@@ -17,7 +17,7 @@ async function getMostRecent() {
         let result = await jsonRequest(constants.MOST_RECENT, `get`);
         return result;
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
@@ -26,7 +26,7 @@ async function getMy(userId) {
         let result = await jsonRequest(`${constants.NFTS}${`?where=_ownerId%3D%22${userId}%22&sortBy=_createdOn%20desc`}`);
         return result;
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
@@ -36,7 +36,7 @@ async function getOne(id) {
         let result = await jsonRequest(`${constants.NFTS}/${id}`, 'get');
         return result;
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
@@ -45,7 +45,7 @@ async function getOneUser(id) {
         let result = await jsonRequest(`${constants.USERS}/${id}`, 'get');
         return result;
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
@@ -55,7 +55,7 @@ async function getLikesCount(bookId) {
         let result = await jsonRequest(`${constants.LIKES}${`?where=bookId%3D%22${bookId}%22&distinct=_ownerId&count`}`);
         return result;
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 async function getSpecificLike(bookId, userId) {
@@ -63,16 +63,15 @@ async function getSpecificLike(bookId, userId) {
         let result = await jsonRequest(`${constants.LIKES}${`?where=bookId%3D%22${bookId}%22%20and%20_ownerId%3D%22${userId}%22&count`}`);
         return result;
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
 async function like(nftId, body) {
     try {
-        console.log(body);
         await jsonRequest(`${constants.NFTS}/like/${nftId}`, 'put', body, true);
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
@@ -80,7 +79,7 @@ async function dislike(nftId, body) {
     try {
         await jsonRequest(`${constants.NFTS}/like/${nftId}`, 'put', body, true);
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
@@ -89,7 +88,7 @@ async function filterByUserId(id) {
         let result = await jsonRequest(`${constants.NFTS}?where=_ownerId%3D%22${id}%22`, 'get');
         return result;
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
@@ -98,7 +97,7 @@ async function filterByYear(year) {
         let result = await jsonRequest(`${constants.NFTS}?where=year%3D${year}`, 'get', undefined, true);
         return result;
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
@@ -106,13 +105,12 @@ async function postWithoutAuth(body) {
     try {
         await jsonRequest(constants.NFTS, 'Post', body);
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
 async function post(body) {
     try {
-        console.log(body);
         return await jsonRequest(constants.NFTS, 'Post', body, true, false);
     } catch (err) {
         return err;
@@ -123,7 +121,7 @@ async function put(id, body) {
     try {
         await jsonRequest(`${constants.NFTS}/${id}`, 'put', body, true, true);
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
@@ -131,7 +129,7 @@ async function del(id) {
     try {
         await jsonRequest(`${constants.NFTS}/${id}`, 'delete', undefined, true);
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
@@ -139,7 +137,7 @@ async function deleteUser(id) {
     try {
         await jsonRequest(`${constants.USERS}/${id}`, 'delete', undefined, true);
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 
@@ -151,7 +149,7 @@ async function logout() {
     try {
         await jsonRequest(constants.LOGOUT, undefined, undefined, true, true);
     } catch (err) {
-        alert(err);
+        return err;
     }
 }
 

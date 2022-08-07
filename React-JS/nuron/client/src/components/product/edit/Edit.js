@@ -24,8 +24,6 @@ export const Edit = () => {
             });
     }, [nftId]);
 
-    console.log(nft);
-
     const [values, setValues] = useState({
         name: nft.name,
         description: nft.description,
@@ -47,8 +45,6 @@ export const Edit = () => {
             owner: user._id,
         });
     }, [nft]);
-
-    console.log(values);
 
 
     const [file, setFile] = useState();
@@ -284,7 +280,16 @@ export const Edit = () => {
                                     </div>
 
                                     <input type="hidden" name="imageUrl" onChange={changeHandler} value={values.imageUrl} />
-
+                                    {errors.createError &&
+                                        <p className={styles.formError}>
+                                            {regError}
+                                        </p>
+                                    }
+                                    {errors.serverError &&
+                                        <p className={styles.formError}>
+                                            Something went wrong please try again later!
+                                        </p>
+                                    }
                                     <div className="col-md-12">
                                         <div className="input-box">
                                             <button

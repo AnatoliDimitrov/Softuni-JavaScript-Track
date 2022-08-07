@@ -1,10 +1,28 @@
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { createSearchParams, Link, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 
 import { AuthContext } from "../services/AuthContext";
 
 export const Header = () => {
     const { user } = useContext(AuthContext);
+    const [value, setValue] = useState('');
+    const navigate = useNavigate();
+
+    const changeHandler = (e) => {
+        setValue(e.target.value);
+    }
+
+    const onSearchHandler = async (e) => {
+        e.preventDefault();
+        navigate({
+            pathname: '/product/catalog',
+            search: createSearchParams({
+                searchWord: value
+            }).toString()
+        });
+
+        setValue('');
+    };
 
     return (
         <header className="rn-header haeder-default header--sticky">
@@ -53,25 +71,21 @@ export const Header = () => {
                         </div>
                     </div>
                     <div className="header-right">
-                        <div className="setting-option d-none d-lg-block">
+                        <div className="d-lg-block">
                             <form className="search-form-wrapper" action="#">
-                                <input type="search" placeholder="Search NFT by Name" aria-label="Search" />
+                                <input
+                                    type="search"
+                                    placeholder="Search NFT by Name"
+                                    aria-label="Search"
+                                    onChange={changeHandler}
+                                    value={value}
+                                />
                                 <div className="search-icon">
-                                    <button><i className="feather-search"></i></button>
+                                    <button onClick={onSearchHandler}><i className="feather-search"></i></button>
                                 </div>
                             </form>
                         </div>
-                        <div className="setting-option rn-icon-list d-block d-lg-none">
-                            <div className="icon-box search-mobile-icon">
-                                <button><i className="feather-search"></i></button>
-                            </div>
-                            <form id="header-search-1" action="#" method="GET" className="large-mobile-blog-search">
-                                <div className="rn-search-mobile form-group">
-                                    <button type="submit" className="search-button"><i className="feather-search"></i></button>
-                                    <input type="text" placeholder="Search ..." />
-                                </div>
-                            </form>
-                        </div>
+                        
                         {user.email
                             ?
                             <div className="header_admin" id="header_admin">

@@ -6,10 +6,12 @@ import styles from './delete.module.css';
 import constants from '../../../services/constants.js';
 import auth from '../../../services/authentication.js';
 
-export const Delete = ({props}) => {
+export const Delete = ({ props }) => {
 
     const { nftId } = useParams();
     const [nft, setNft] = useState({});
+    const [error, setError] = useState('');
+    const [state, setState] = useState(false);
 
     useEffect(() => {
         auth.getOne(nftId)
@@ -17,8 +19,6 @@ export const Delete = ({props}) => {
                 setNft(result.nft);
             });
     }, [nftId]);
-
-    console.log(nft);
 
     const [values, setValues] = useState({
         name: nft.name,
@@ -46,18 +46,25 @@ export const Delete = ({props}) => {
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
+        setState(true);
 
         const url = `${constants.NFTS}/${nftId}`;
 
         try {
-            const res = axios.delete(
+            const res = await axios.delete(
                 url,
-            ).then(navigate('/user/my-collection'));
+            );//.then(navigate('/user/my-collection'))
+            // .catch(
+            //     setError('No connection to the server please try again later!')
+            // );
         } catch (ex) {
-            console.log(ex);
+            setError('No connection to the server please try again later!');
+            setState(false);
+            return;
         }
+        navigate('/user/my-collection');
     }
-    
+
     return (
         <>
             <div className="rn-breadcrumb-inner ptb--30">
@@ -104,14 +111,14 @@ export const Delete = ({props}) => {
                                             disabled
                                             className="inputfile"
                                         />
-                                        <img 
+                                        <img
                                             id="createfileImage" src={values.imageUrl
                                                 ? values.imageUrl
-                                                :"/images/portfolio/portfolio-05.jpg"
-                                            } 
-                                            alt="" 
-                                            data-black-overlay="6" 
-                                            />
+                                                : "/images/portfolio/portfolio-05.jpg"
+                                            }
+                                            alt=""
+                                            data-black-overlay="6"
+                                        />
 
                                         <label htmlFor="createinputfile" title="No File Choosen">
                                         </label>
@@ -164,14 +171,20 @@ export const Delete = ({props}) => {
                                     </div>
 
                                     <input type="hidden" name="imageUrl" value={values.imageUrl} />
+                                    {error &&
+                                        <div className="alert alert-warning" role="alert">
+                                            {error}
+                                        </div>
+                                    }
 
                                     <div className="col-md-12">
                                         <div className="input-box">
                                             <button
                                                 type="submit"
                                                 className="btn btn-danger btn-large w-100"
+                                                disabled={state}
                                             >
-                                                Delete Item
+                                                {state?'Deleting...':' Delete Item'}
                                             </button>
                                         </div>
                                     </div>

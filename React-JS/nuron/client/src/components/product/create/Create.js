@@ -22,8 +22,11 @@ export const Create = () => {
     const [fileName, setFileName] = useState("");
     const navigate = useNavigate();
     const [errors, setErrors] = useState({ first: true });
-    const [state, setState] = useState(false);
+    const [btn, setBtn] = useState(false);
     const [regError, setRegError] = useState('');
+
+    useEffect(() => {
+      }, [btn])
 
     const changeHandler = (e) => {
         setValues(state => ({
@@ -80,8 +83,7 @@ export const Create = () => {
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
-
-        setState(true);
+        await setBtn(true);
         const formData = new FormData();
         formData.append("file", file);
         formData.append("fileName", fileName);
@@ -107,12 +109,17 @@ export const Create = () => {
                             first: false,
                         }));
 
-                        setState(false);
+                        setBtn(false);
                         return;
                     } else {
                         navigate('/user/my-collection');
                     }
-                })
+                }).catch(
+                    setErrors(state => ({
+                        ...state,
+                        serverError: true,
+                        first: false,
+                    })));
         } catch (ex) {
             setErrors(state => ({
                 ...state,
@@ -121,7 +128,7 @@ export const Create = () => {
             }));
         }
 
-        setState(false);
+        setBtn(false);
     }
 
     let isValidForm = Object.values(errors).some(x => x);
@@ -262,7 +269,7 @@ export const Create = () => {
                                     }
                                     {errors.serverError &&
                                         <p className={styles.formError}>
-                                            Something went wrong please try again later!
+                                            Something went wrong!
                                         </p>
                                     }
 
@@ -271,9 +278,9 @@ export const Create = () => {
                                             <button
                                                 type="submit"
                                                 className="btn btn-primary btn-large w-100"
-                                                disabled={isValidForm && state}
+                                                disabled={isValidForm && btn}
 
-                                            >{state ? 'Loading...' :
+                                            >{btn ? 'Loading...' :
                                                 'Submit Item'}
                                             </button>
                                         </div>

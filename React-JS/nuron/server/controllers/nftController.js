@@ -6,6 +6,10 @@ const Nft = require('../models/Nft');
 router.get('/', async (req, res) => {
     try {
         const count = await Nft.countDocuments();
+
+        let searchWord = req.query.search;
+        console.log(searchWord);
+
         let nfts = await Nft
             .find()
             .lean();
@@ -50,15 +54,15 @@ router.post('/', async (req, res) => {
 
 
     let { name, description, imageUrl, price, owner } = req.body;
-    if (name.length < 2) {
-        return res.json({ error: 'Name too Short!' });
-    }
-    if (description.length < 10) {
-        return res.json({ error: 'Description too Short!' });
-    }
-    if (price <= 0) {
-        return res.json({ error: 'Price must be positive!' });
-    }
+    // if (name.length < 2) {
+    //     return res.json({ error: 'Name too Short!' });
+    // }
+    // if (description.length < 10) {
+    //     return res.json({ error: 'Description too Short!' });
+    // }
+    // if (price <= 0) {
+    //     return res.json({ error: 'Price must be positive!' });
+    // }
     if (!fileName) {
         return res.json({ error: 'No file uploaded!' });
     }

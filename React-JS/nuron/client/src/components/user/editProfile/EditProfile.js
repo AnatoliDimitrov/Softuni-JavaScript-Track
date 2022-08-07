@@ -160,7 +160,6 @@ export const EditProfile = () => {
 
                     auth.getOneUser(userId)
                         .then(result => {
-                            console.log(result);
                             userAuth(result);
                         });
 
@@ -419,7 +418,7 @@ export const EditProfile = () => {
                                                         value={values.phoneNumber}
                                                     />
                                                 </div>
-                                                {errors.bio &&
+                                                {errors.phoneNumber &&
                                                     <p className={styles.formError}>
                                                         Phone should be valid!
                                                     </p>

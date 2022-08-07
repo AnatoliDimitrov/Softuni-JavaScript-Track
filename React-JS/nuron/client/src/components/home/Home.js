@@ -9,11 +9,14 @@ import { HomeNft } from "./HomeNft.js";
 export const Home = () => {
     const { user } = useContext(AuthContext);
     const [nfts, setNfts] = useState([]);
+    const [errors, setErrors] = useState('');
 
     useEffect(() => {
         const prom = auth.getNfts()
             .then(result => {
                 setNfts(result.nfts)
+            }).catch( err => {
+                setErrors('No connection to the server please try again later!')
             });
     }, []);
 
@@ -55,11 +58,14 @@ export const Home = () => {
                     </div>
 
                     <div className="row g-5">
-
-                        {nfts.length > 0
-                            ? nfts.map(n => <HomeNft key={n._id} nft={n} />)
-                            : <h5>There are no NFTs yet...</h5>
+                        {errors
+                            ? <h5>{errors}</h5>
+                            :nfts.length > 0
+                                ? nfts.map(n => <HomeNft key={n._id} nft={n} />)
+                                : <h5>There are no NFTs yet...</h5>
                         }
+
+                        
 
                     </div>
                 </div>

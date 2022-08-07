@@ -1,18 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import auth from '../../services/authentication.js';
 import { CatalogNft } from "./CatalogNft.js";
 
-export const Catalog = () => {
+export const Catalog = ({props}) => {
     const [nfts, setNfts] = useState([]);
+    const [error, setError] = useState('');
+    const [searchparams] = useSearchParams();
+
+    let parameter = searchparams.get('searchWord')
 
     useEffect(() => {
-        const prom = auth.getNfts()
+        const prom = auth.getNfts(parameter)
             .then(result => {
                 setNfts(result.nfts)
+            })
+            .catch(err => {
+                setError('No connection to the server please try again later!')
             });
-    }, []);
+    }, [parameter]);
 
     return (
         <>
@@ -36,12 +43,12 @@ export const Catalog = () => {
             <div className="rn-product-area rn-section-gapTop">
                 <div className="container">
                     <div className="row g-5">
-
-                        {nfts.length > 0
+                    {error
+                        ? <h5>{error}</h5>
+                        :nfts.length > 0
                             ? nfts.map(n => <CatalogNft key={n._id} nft={n} />)
                             : <h5>There are no NFTs yet...</h5>
-                        }
-
+                    }
                     </div>
                 </div>
             </div>
