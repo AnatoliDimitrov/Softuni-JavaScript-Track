@@ -62,9 +62,6 @@ function App() {
                         <Route path="/user/logout" element={<Logout />} />
                         <Route path="/user/delete-user" element={<DeleteUser />} />
                         <Route path="/product/create" element={<Create />} />
-                    </Route>
-
-                    <Route element={<OwnerRouteGuard />}>
                         <Route path="/product/edit/:nftId" element={<Edit />} />
                         <Route path="/product/delete/:nftId" element={<Delete />} />
                     </Route>

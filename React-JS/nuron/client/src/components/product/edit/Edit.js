@@ -21,7 +21,12 @@ export const Edit = () => {
         auth.getOne(nftId)
             .then(result => {
                 setNft(result.nft);
+                if (result.nft.owner != user._id) {
+                    return navigate('/product/catalog', {replace: true});
+                }
             });
+
+
     }, [nftId]);
 
     const [values, setValues] = useState({

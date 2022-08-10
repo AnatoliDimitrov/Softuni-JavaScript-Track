@@ -64,7 +64,7 @@ export const EditProfile = () => {
             ...state,
             [e.target.name]: e.target.value
         }));
-        
+
         setChangedInfo(false);
     }
 
@@ -132,7 +132,8 @@ export const EditProfile = () => {
 
     const onSubmitPictureHandler = async (e) => {
         e.preventDefault();
-
+        setUploadedPicture(old => !old);
+        console.log(uploadedPicture);
         const formData = new FormData();
         formData.append("file", file);
         formData.append("fileName", fileName);
@@ -163,16 +164,23 @@ export const EditProfile = () => {
                             userAuth(result);
                         });
 
-                        setUploadedPicture(true);
+                    setUploadedPicture(true);
                 }
+            }).catch((err) => {
+                setErrors(state => ({
+                    ...state,
+                    pictureError: true,
+                    first: false,
+                }));
             });
         } catch (ex) {
             setErrors(state => ({
                 ...state,
-                serverError: true,
+                pictureError: true,
                 first: false,
             }));
         }
+        setUploadedPicture(false);
     }
 
     const onSubmitHandler = async (e) => {
@@ -212,6 +220,12 @@ export const EditProfile = () => {
 
                     setChangedInfo(true);
                 }
+            }).catch((err) => {
+                setErrors(state => ({
+                    ...state,
+                    serverError: true,
+                    first: false,
+                }));
             });
         } catch (ex) {
             setErrors(state => ({
@@ -312,13 +326,19 @@ export const EditProfile = () => {
                                                             Picture uploaded!
                                                         </div>
                                                     }
+
+                                                    {errors.pictureError &&
+                                                        <p className={styles.formError}>
+                                                            Something went wrong please try again later!
+                                                        </p>
+                                                    }
                                                     <div className="input-box">
                                                         <button
                                                             type="submit"
                                                             className={`${styles.buttons} btn btn-primary btn-large w-100`}
-                                                            disabled={isValidForm}
+                                                            disabled={uploadedPicture}
                                                         >
-                                                            Save
+                                                            {state ? 'Saving...' : 'Save'}
                                                         </button>
                                                     </div>
                                                 </div>
@@ -444,9 +464,9 @@ export const EditProfile = () => {
                                                 <button
                                                     type="submit"
                                                     className={`${styles.buttons} btn btn-primary btn-large w-100`}
-                                                    disabled={isValidForm}
+                                                    disabled={isValidForm && state}
                                                 >
-                                                    Save
+                                                    {state ? 'Saving...' : 'Save'}
                                                 </button>
                                             </div>
                                         </form>

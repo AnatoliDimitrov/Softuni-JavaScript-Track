@@ -1,13 +1,16 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useContext } from "react";
 import axios from 'axios';
+
+import { AuthContext } from "../../../services/AuthContext";
 
 import styles from './delete.module.css';
 import constants from '../../../services/constants.js';
 import auth from '../../../services/authentication.js';
 
 export const Delete = ({ props }) => {
-
+    const { user } = useContext(AuthContext);
     const { nftId } = useParams();
     const [nft, setNft] = useState({});
     const [error, setError] = useState('');
@@ -17,6 +20,11 @@ export const Delete = ({ props }) => {
         auth.getOne(nftId)
             .then(result => {
                 setNft(result.nft);
+                console.log(result.nft);
+        
+                if (result.nft.owner != user._id) {
+                    return navigate('/product/catalog', {replace: true});
+                }
             });
     }, [nftId]);
 
@@ -27,7 +35,7 @@ export const Delete = ({ props }) => {
         imageUrl: nft.imageUrl,
         picture: '',
         pictureName: '',
-        owner: 'Anatoli Dimitrov',
+        owner: nft.owner,
     });
 
     useEffect(() => {
@@ -38,7 +46,7 @@ export const Delete = ({ props }) => {
             imageUrl: nft.imageUrl,
             picture: '',
             pictureName: '',
-            owner: 'Anatoli Dimitrov',
+            owner: nft.owner,
         });
     }, [nft]);
 
@@ -51,12 +59,22 @@ export const Delete = ({ props }) => {
         const url = `${constants.NFTS}/${nftId}`;
 
         try {
-            const res = await axios.delete(
+            const res = axios.delete(
                 url,
-            );//.then(navigate('/user/my-collection'))
+            );
+        //  .then((result) => {
+        //         console.log(result);
+        //         if (result.nft.owner != user._id) {
+        //             console.log(values.owner);
+        //             console.log(user._id);
+        //             return navigate('/product/catalog', {replace: true});
+        //         }
+        // })
             // .catch(
             //     setError('No connection to the server please try again later!')
             // );
+
+            console.log(res);
         } catch (ex) {
             setError('No connection to the server please try again later!');
             setState(false);

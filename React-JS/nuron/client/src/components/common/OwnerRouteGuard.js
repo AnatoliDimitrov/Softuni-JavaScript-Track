@@ -1,5 +1,5 @@
-import { Navigate, Outlet, useParams } from "react-router-dom";
-import { useContext, useState } from "react";
+import { Navigate, Outlet, useParams, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 
 import { AuthContext } from "../../services/AuthContext";
 import auth from '../../services/authentication.js';
@@ -8,17 +8,24 @@ const OwnerRouteGuard = ({ children }) => {
     const { user } = useContext(AuthContext);
     const { nftId } = useParams();
     const [nft, setNft] = useState({});
+    const navigate = useNavigate();
 
-    auth.getOne(nftId)
-    .then(result => {
-        setNft(result.nft);
-    });
+    useEffect(() => {
+        auth.getOne(nftId)
+        .then(result => {
+            console.log(result.nft);
+            setNft(result.nft);
+            if (user._id != result.nft.owner) {
+                return navigate('/product/catalog', {replace: true});
+            }
+        
+            return children ? children : <Outlet />;
+        });
+    
+    }, [nftId]);
 
-    if (user._id != nft.owner) {
-        return <Navigate to="/product/catalog" replace />
-    }
-
-    return children ? children : <Outlet />;
+    
+    
 }
 
 export default OwnerRouteGuard;
