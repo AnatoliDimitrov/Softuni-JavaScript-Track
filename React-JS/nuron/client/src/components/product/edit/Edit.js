@@ -138,7 +138,7 @@ export const Edit = () => {
                     setState(false);
                     return;
                 } else {
-                    navigate('/user/my-collection');
+                    navigate(`/product/details/${nft._id}`);
                 }
             });
         } catch (ex) {
