@@ -36,10 +36,10 @@ export const Footer = () => {
                     <div className="footer-widget widget-quicklink">
                         <h6 className="widget-title">Nuron</h6>
                         <ul className="footer-list-one">
-                            <li className="single-list"><Link to="#">Home</Link></li>
-                            <li className="single-list"><Link to="#">Catalog</Link></li>
-                            <li className="single-list"><Link to="#">About</Link></li>
-                            <li className="single-list"><Link to="#">Contact</Link></li>
+                            <li className="single-list"><Link to="/">Home</Link></li>
+                            <li className="single-list"><Link to="/product/catalog">Catalog</Link></li>
+                            <li className="single-list"><Link to="/about">About</Link></li>
+                            <li className="single-list"><Link to="/contact">Contact</Link></li>
                         </ul>
                     </div>
                 </div>
